@@ -197,17 +197,18 @@ const IndianMotif: React.FC<{ type: MotifType; color: string; className?: string
   }
 };
 
-const StoryCardBody: React.FC<{ chapter: StoryChapter; total: number }> = ({ chapter, total }) => (
+const StoryCardBody: React.FC<{ chapter: StoryChapter; total: number }> = React.memo(({ chapter, total }) => (
   <div
-    className="relative w-full h-full bg-[#fcf7ea] text-[#5c1a1b] rounded-[1.75rem] lg:rounded-[2.1rem] border border-[#c59436]/55 px-8 py-9 sm:px-12 sm:py-11 lg:px-[clamp(3.6rem,5.5vw,5.4rem)] lg:pt-[clamp(3.6rem,7.2vh,5.2rem)] lg:pb-[clamp(4.2rem,8.2vh,5.8rem)] shadow-[0_28px_70px_-20px_rgba(92,26,27,0.32)] flex flex-col justify-between overflow-hidden"
+    className="relative w-full h-full min-h-[410px] sm:min-h-[430px] lg:min-h-0 bg-[#fcf7ea] text-[#5c1a1b] rounded-[1.75rem] lg:rounded-[2.1rem] border border-[#c59436]/55 px-8 py-9 sm:px-12 sm:py-11 lg:px-[clamp(3.6rem,5.5vw,5.4rem)] lg:pt-[clamp(3.6rem,7.2vh,5.2rem)] lg:pb-[clamp(4.2rem,8.2vh,5.8rem)] shadow-[0_12px_28px_-8px_rgba(92,26,27,0.24)] lg:shadow-[0_28px_70px_-20px_rgba(92,26,27,0.32)] flex flex-col justify-between overflow-hidden"
   >
     {/* Unified Fine-Art Rajasthani Stationery Background */}
     <img
       src={STORY_CARD_ART_BG}
       alt=""
       aria-hidden="true"
+      decoding="async"
       referrerPolicy="no-referrer"
-      className="pointer-events-none select-none absolute inset-0 w-full h-full object-cover object-center scale-[1.05]"
+      className="pointer-events-none select-none absolute inset-0 w-full h-full object-cover object-center lg:scale-[1.05]"
     />
 
     {/* Subtle luminous center ivory wash so Royal Maroon text stays crisp while painted borders & palace shine */}
@@ -257,14 +258,15 @@ const StoryCardBody: React.FC<{ chapter: StoryChapter; total: number }> = ({ cha
       </span>
     </div>
   </div>
-);
+));
+StoryCardBody.displayName = 'StoryCardBody';
 
 export const LoveStoryStack: React.FC = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const pinRef = useRef<HTMLDivElement>(null);
   const stackRootRef = useRef<HTMLDivElement>(null);
   const slideRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const mobileCardRefs = useRef<(HTMLElement | null)[]>([]);
+  const mobileSentinelRefs = useRef<(HTMLDivElement | null)[]>([]);
   const triggerRef = useRef<ScrollTrigger | null>(null);
 
   const [activeIndex, setActiveIndex] = useState(0);
@@ -418,27 +420,36 @@ export const LoveStoryStack: React.FC = () => {
     };
   }, []);
 
-  // Mobile IntersectionObserver to keep active chapter synced as guests thumb-scroll
+  // Mobile chapter tracking via non-sticky flow sentinels (prevents sticky-card observer ping-pong & re-render jitter)
   useEffect(() => {
-    const cards = mobileCardRefs.current.filter((el): el is HTMLElement => el !== null);
-    if (cards.length === 0) return;
+    const sentinels = mobileSentinelRefs.current.filter((el): el is HTMLDivElement => el !== null);
+    if (sentinels.length === 0) return;
 
     const observer = new IntersectionObserver(
       (entries) => {
+        if (window.matchMedia('(min-width: 1024px)').matches) return;
+
+        let latestPassed = -1;
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            const idxAttr = entry.target.getAttribute('data-chapter-index');
+            const idxAttr = entry.target.getAttribute('data-sentinel-index');
             if (idxAttr !== null) {
               const parsed = parseInt(idxAttr, 10);
-              if (!Number.isNaN(parsed)) setActiveIndex(parsed);
+              if (!Number.isNaN(parsed) && parsed > latestPassed) {
+                latestPassed = parsed;
+              }
             }
           }
         });
+
+        if (latestPassed !== -1) {
+          setActiveIndex((prev) => (prev === latestPassed ? prev : latestPassed));
+        }
       },
-      { rootMargin: '-30% 0px -45% 0px', threshold: 0.1 }
+      { rootMargin: '-12% 0px -65% 0px', threshold: 0 }
     );
 
-    cards.forEach((card) => observer.observe(card));
+    sentinels.forEach((el) => observer.observe(el));
     return () => observer.disconnect();
   }, []);
 
@@ -458,9 +469,10 @@ export const LoveStoryStack: React.FC = () => {
       return;
     }
 
-    const mobileCard = mobileCardRefs.current[index];
-    if (mobileCard) {
-      const top = mobileCard.getBoundingClientRect().top + window.scrollY - 96;
+    const sentinel = mobileSentinelRefs.current[index];
+    if (sentinel) {
+      const stickyOffset = 20 + index * 12;
+      const top = sentinel.getBoundingClientRect().top + window.scrollY - stickyOffset;
       window.scrollTo({
         top,
         behavior: prefersReducedMotion ? 'auto' : 'smooth',
@@ -473,7 +485,7 @@ export const LoveStoryStack: React.FC = () => {
       id="story"
       ref={sectionRef}
       aria-labelledby="love-story-heading"
-      className="relative z-20 isolate bg-[#faf3e4] text-[#5c1a1b] overflow-x-clip"
+      className="relative z-20 bg-[#faf3e4] text-[#5c1a1b] lg:isolate lg:overflow-x-clip"
     >
       {/* DESKTOP (>= 1024px): Pinned 100vh 3D Peeling Stack */}
       <div
@@ -617,27 +629,37 @@ export const LoveStoryStack: React.FC = () => {
             </div>
           </div>
 
-          {/* Sticky Stacked Cards (Falls back to plain list under prefers-reduced-motion) */}
-          <div className="space-y-6 pb-12">
+          {/* Smooth GPU-Stabilized Sticky-Overlaying Card Stack on Mobile */}
+          <div className="relative pb-10">
             {STORY_CHAPTERS.map((chapter, idx) => (
-              <article
-                key={chapter.id}
-                ref={(el) => {
-                  mobileCardRefs.current[idx] = el;
-                }}
-                data-chapter-index={idx}
-                className={prefersReducedMotion ? 'relative' : 'sticky'}
-                style={
-                  prefersReducedMotion
-                    ? undefined
-                    : {
-                        top: `calc(1.25rem + ${idx * 10}px)`,
-                        zIndex: idx + 1,
-                      }
-                }
-              >
-                <StoryCardBody chapter={chapter} total={STORY_CHAPTERS.length} />
-              </article>
+              <React.Fragment key={chapter.id}>
+                {/* Non-sticky flow sentinel used for stable chapter sync & jump-to-chapter */}
+                <div
+                  ref={(el) => {
+                    mobileSentinelRefs.current[idx] = el;
+                  }}
+                  data-sentinel-index={idx}
+                  aria-hidden="true"
+                  className={idx === 0 ? 'h-0' : 'h-8'}
+                />
+                <article
+                  className={prefersReducedMotion ? 'relative' : 'sticky'}
+                  style={
+                    prefersReducedMotion
+                      ? undefined
+                      : {
+                          top: `${20 + idx * 12}px`,
+                          zIndex: idx + 1,
+                          transform: 'translate3d(0, 0, 0)',
+                          WebkitBackfaceVisibility: 'hidden',
+                          backfaceVisibility: 'hidden',
+                          willChange: 'transform',
+                        }
+                  }
+                >
+                  <StoryCardBody chapter={chapter} total={STORY_CHAPTERS.length} />
+                </article>
+              </React.Fragment>
             ))}
           </div>
         </div>
