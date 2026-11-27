@@ -1,0 +1,143 @@
+@import "tailwindcss";
+
+:root {
+  --page: #faf3e4;
+  --ink: #5c1a1b;
+  --tomato: #ef4a23;
+  --butter: #ffd46e;
+  --sky: #8fc6e8;
+  --pink: #f6a9c2;
+  --sage: #b9c48a;
+  --white: #ffffff;
+  --night: #471418;
+}
+
+html {
+  font-size: calc(100vw / 90);
+  background-color: var(--page);
+  color: var(--ink);
+  font-family: 'Archivo', sans-serif;
+  overflow-x: clip;
+}
+
+@media (max-width: 991px) {
+  html {
+    font-size: calc(100vw / 60);
+  }
+}
+
+@media (max-width: 600px) {
+  html {
+    font-size: calc(100vw / 24.375);
+  }
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--page);
+  color: var(--ink);
+  transition: background-color 0.7s cubic-bezier(0.65, 0.05, 0, 1), color 0.7s cubic-bezier(0.65, 0.05, 0, 1);
+  overflow-x: clip;
+}
+
+html[data-theme="dark"] {
+  --page: #471418;
+  --ink: #faf3e4;
+}
+
+.font-archivo {
+  font-family: 'Archivo', sans-serif;
+  font-variation-settings: "wght" 700, "wdth" 72;
+}
+
+.font-playfair {
+  font-family: 'Playfair', serif;
+  font-variation-settings: "wght" 300, "wdth" 87.5, "opsz" 120;
+}
+
+.font-yellowtail {
+  font-family: 'Yellowtail', cursive;
+}
+
+.font-titan {
+  font-family: 'Titan One', cursive;
+}
+
+/* Crop box helper */
+.crop {
+  container-type: size;
+  overflow: hidden;
+  position: relative;
+}
+
+.crop .cell {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  aspect-ratio: var(--ar);
+  width: max(100cqw, calc(100cqh * var(--ar)));
+  overflow: hidden;
+}
+
+.crop .cell img {
+  position: absolute;
+  max-width: none;
+  width: var(--img-w);
+  height: var(--img-h);
+  left: var(--img-l);
+  top: var(--img-t);
+}
+
+/* Marquee infinite keyframe */
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-100%); }
+}
+
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 25s linear infinite;
+}
+
+/* Custom underline draw */
+.draw-line path {
+  stroke: currentColor;
+  stroke-width: 10;
+  stroke-linecap: round;
+  fill: none;
+}
+
+/* Subtle gold-leaf shimmer frame animation */
+@keyframes goldLeafShimmer {
+  0% {
+    transform: translateX(-120%) skewX(-18deg);
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.45;
+  }
+  50% {
+    opacity: 0.55;
+  }
+  80% {
+    opacity: 0.35;
+  }
+  100% {
+    transform: translateX(220%) skewX(-18deg);
+    opacity: 0;
+  }
+}
+
+.gold-leaf-sheen {
+  animation: goldLeafShimmer 7.5s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gold-leaf-sheen {
+    animation: none;
+    opacity: 0;
+  }
+}
