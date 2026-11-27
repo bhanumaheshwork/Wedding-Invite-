@@ -20,67 +20,57 @@ export const KolibrieWeddingApp: React.FC = () => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const musicBtnRef = useRef<HTMLButtonElement | null>(null);
   const userMutedRef = useRef(false);
+  const isAttemptingPlayRef = useRef(false);
   const mainRef = useRef<HTMLElement>(null);
 
-  const WEDDING_SONG_SRC = '/assets/aistudio/Rathinamo-Female-Version_f1b1fb37.mp3';
-  const WEDDING_SONG_START_SEC = 67; // 1m 07s
+  const WEDDING_SONG_SRC = '/assets/wedding-song-1m07s.mp3';
 
   useEffect(() => {
-    const audio = new Audio(WEDDING_SONG_SRC);
-    audio.preload = 'auto';
-    audio.loop = false;
-    audio.volume = 0.55;
-    audioRef.current = audio;
+    const audio = audioRef.current;
+    if (!audio) return;
 
-    const ensureStartOffset = () => {
-      if (audio.currentTime < WEDDING_SONG_START_SEC - 0.5) {
-        try {
-          audio.currentTime = WEDDING_SONG_START_SEC;
-        } catch {
-          // Will seek once metadata is ready
-        }
-      }
-    };
+    audio.volume = 0.6;
+    audio.muted = false;
 
-    const handleEnded = () => {
-      if (userMutedRef.current) return;
-      audio.currentTime = WEDDING_SONG_START_SEC;
-      audio.play().catch(() => {
-        setIsPlayingMusic(false);
-      });
+    const removeUnlockListeners = () => {
+      window.removeEventListener('touchend', handleFirstInteraction, true);
+      window.removeEventListener('click', handleFirstInteraction, true);
+      window.removeEventListener('keydown', handleFirstInteraction, true);
     };
 
     const handlePlay = () => {
-      ensureStartOffset();
+      isAttemptingPlayRef.current = false;
       setIsPlayingMusic(true);
       removeUnlockListeners();
     };
 
     const handlePause = () => {
+      isAttemptingPlayRef.current = false;
       setIsPlayingMusic(false);
     };
 
-    const removeUnlockListeners = () => {
-      window.removeEventListener('pointerdown', handleFirstInteraction, true);
-      window.removeEventListener('touchstart', handleFirstInteraction, true);
-      window.removeEventListener('click', handleFirstInteraction, true);
-      window.removeEventListener('keydown', handleFirstInteraction, true);
-    };
-
     const tryAutoPlay = () => {
-      if (userMutedRef.current) return;
-      ensureStartOffset();
-      audio
-        .play()
-        .then(() => {
-          ensureStartOffset();
-          setIsPlayingMusic(true);
-          removeUnlockListeners();
-        })
-        .catch(() => {
-          // Browser blocked unmuted autoplay until first user gesture
-          setIsPlayingMusic(false);
-        });
+      if (userMutedRef.current || !audio.paused || isAttemptingPlayRef.current) return;
+      isAttemptingPlayRef.current = true;
+      audio.muted = false;
+      audio.volume = 0.6;
+
+      const playPromise = audio.play();
+      if (playPromise !== undefined) {
+        playPromise
+          .then(() => {
+            isAttemptingPlayRef.current = false;
+            setIsPlayingMusic(true);
+            removeUnlockListeners();
+          })
+          .catch(() => {
+            // Mobile/desktop browser blocked autoplay before a valid user tap/click; keep listeners active
+            isAttemptingPlayRef.current = false;
+            setIsPlayingMusic(false);
+          });
+      } else {
+        isAttemptingPlayRef.current = false;
+      }
     };
 
     const handleFirstInteraction = (e: Event) => {
@@ -88,34 +78,29 @@ export const KolibrieWeddingApp: React.FC = () => {
         removeUnlockListeners();
         return;
       }
-      // Let the music button's own onClick handle taps on the toggle button
+      // Let the music toggle button handle taps on itself without double-triggering
       if (musicBtnRef.current && e.target instanceof Node && musicBtnRef.current.contains(e.target)) {
         return;
       }
       tryAutoPlay();
     };
 
-    audio.addEventListener('loadedmetadata', ensureStartOffset);
     audio.addEventListener('playing', handlePlay);
     audio.addEventListener('pause', handlePause);
-    audio.addEventListener('ended', handleEnded);
 
-    // Register first-gesture unlock listeners first, then attempt immediate autoplay
-    window.addEventListener('pointerdown', handleFirstInteraction, { capture: true, passive: true });
-    window.addEventListener('touchstart', handleFirstInteraction, { capture: true, passive: true });
+    // Attach mobile-safe gesture unlock listeners (touchend + click + keydown avoid touchstart scroll-abort)
+    window.addEventListener('touchend', handleFirstInteraction, { capture: true, passive: true });
     window.addEventListener('click', handleFirstInteraction, { capture: true, passive: true });
     window.addEventListener('keydown', handleFirstInteraction, { capture: true, passive: true });
 
+    // Attempt immediate autoplay on page open
     tryAutoPlay();
 
     return () => {
       removeUnlockListeners();
-      audio.removeEventListener('loadedmetadata', ensureStartOffset);
       audio.removeEventListener('playing', handlePlay);
       audio.removeEventListener('pause', handlePause);
-      audio.removeEventListener('ended', handleEnded);
       audio.pause();
-      audioRef.current = null;
     };
   }, []);
 
@@ -180,35 +165,42 @@ export const KolibrieWeddingApp: React.FC = () => {
 
     if (!audio.paused) {
       userMutedRef.current = true;
+      isAttemptingPlayRef.current = false;
       audio.pause();
       setIsPlayingMusic(false);
     } else {
       userMutedRef.current = false;
-      const seekIfNeeded = () => {
-        if (audio.currentTime < WEDDING_SONG_START_SEC - 0.5) {
-          try {
-            audio.currentTime = WEDDING_SONG_START_SEC;
-          } catch {
-            // Seek will retry on loadedmetadata / playing
-          }
-        }
-      };
-
-      seekIfNeeded();
-      audio
-        .play()
-        .then(() => {
-          seekIfNeeded();
-          setIsPlayingMusic(true);
-        })
-        .catch(() => {
-          setIsPlayingMusic(false);
-        });
+      isAttemptingPlayRef.current = true;
+      audio.muted = false;
+      audio.volume = 0.6;
+      const playPromise = audio.play();
+      if (playPromise !== undefined) {
+        playPromise
+          .then(() => {
+            isAttemptingPlayRef.current = false;
+            setIsPlayingMusic(true);
+          })
+          .catch(() => {
+            isAttemptingPlayRef.current = false;
+            setIsPlayingMusic(false);
+          });
+      } else {
+        isAttemptingPlayRef.current = false;
+      }
     }
   };
 
   return (
     <div className="min-h-screen relative selection:bg-[#ef4a23] selection:text-[#faf3e4]">
+      {/* Pre-trimmed custom wedding song starting cleanly at 1m 07s */}
+      <audio
+        ref={audioRef}
+        src={WEDDING_SONG_SRC}
+        loop
+        playsInline
+        preload="auto"
+      />
+
       {/* 5.1 First-Visit-Only Orange Ribbon Load Wipe */}
       {showIntroWipe && (
         <IntroRibbonWipe
@@ -227,10 +219,10 @@ export const KolibrieWeddingApp: React.FC = () => {
         onClick={toggleMusic}
         aria-label={isPlayingMusic ? 'Mute wedding music' : 'Play wedding music'}
         aria-pressed={isPlayingMusic}
-        className="fixed bottom-6 right-6 z-40 bg-[#faf3e4] text-[#5c1a1b] border-2 border-[#5c1a1b] p-3 rounded-full shadow-lg hover:bg-[#ef4a23] hover:border-[#ef4a23] hover:text-white transition-all flex items-center gap-2 font-archivo text-xs uppercase tracking-wider cursor-pointer"
+        className="fixed bottom-5 right-5 sm:bottom-6 sm:right-6 z-40 bg-[#faf3e4] text-[#5c1a1b] border-2 border-[#5c1a1b] px-3.5 py-2.5 sm:px-4 sm:py-3 rounded-full shadow-lg hover:bg-[#ef4a23] hover:border-[#ef4a23] hover:text-white transition-all flex items-center gap-2 font-archivo text-xs uppercase tracking-wider cursor-pointer"
       >
-        {isPlayingMusic ? <Volume2 className="w-4 h-4 animate-pulse" /> : <VolumeX className="w-4 h-4" />}
-        <span className="hidden sm:inline">{isPlayingMusic ? "Mute" : "Play Music"}</span>
+        {isPlayingMusic ? <Volume2 className="w-4 h-4 animate-pulse shrink-0" /> : <VolumeX className="w-4 h-4 shrink-0" />}
+        <span>{isPlayingMusic ? "Mute" : "Play Music"}</span>
       </button>
 
       <main ref={mainRef} className={`transition-opacity duration-700 ${pageReady ? 'opacity-100' : 'opacity-0'}`}>

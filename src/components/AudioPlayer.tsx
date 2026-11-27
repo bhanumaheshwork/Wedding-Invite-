@@ -9,39 +9,14 @@ interface AudioPlayerProps {
 export const AudioPlayer: React.FC<AudioPlayerProps> = ({ isPlaying, togglePlay }) => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  const WEDDING_SONG_SRC = '/assets/aistudio/Rathinamo-Female-Version_f1b1fb37.mp3';
-  const WEDDING_SONG_START_SEC = 67; // 1m 07s
-
   useEffect(() => {
-    const audio = new Audio(WEDDING_SONG_SRC);
+    const audio = new Audio('/assets/wedding-song-1m07s.mp3');
     audio.preload = 'auto';
-    audio.loop = false;
-    audio.volume = 0.55;
-
-    const ensureStartOffset = () => {
-      if (audio.currentTime < WEDDING_SONG_START_SEC - 0.5) {
-        try {
-          audio.currentTime = WEDDING_SONG_START_SEC;
-        } catch {
-          // Will retry when metadata is ready
-        }
-      }
-    };
-
-    const handleEnded = () => {
-      audio.currentTime = WEDDING_SONG_START_SEC;
-      audio.play().catch(() => {});
-    };
-
-    audio.addEventListener('loadedmetadata', ensureStartOffset);
-    audio.addEventListener('playing', ensureStartOffset);
-    audio.addEventListener('ended', handleEnded);
+    audio.loop = true;
+    audio.volume = 0.6;
     audioRef.current = audio;
 
     return () => {
-      audio.removeEventListener('loadedmetadata', ensureStartOffset);
-      audio.removeEventListener('playing', ensureStartOffset);
-      audio.removeEventListener('ended', handleEnded);
       audio.pause();
       audioRef.current = null;
     };
@@ -51,13 +26,6 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = ({ isPlaying, togglePlay 
     const audio = audioRef.current;
     if (!audio) return;
     if (isPlaying) {
-      if (audio.currentTime < WEDDING_SONG_START_SEC - 0.5) {
-        try {
-          audio.currentTime = WEDDING_SONG_START_SEC;
-        } catch {
-          // Will seek on metadata load
-        }
-      }
       audio.play().catch(() => {
         // Autoplay policy handling
       });
