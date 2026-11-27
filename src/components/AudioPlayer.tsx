@@ -9,28 +9,60 @@ interface AudioPlayerProps {
 export const AudioPlayer: React.FC<AudioPlayerProps> = ({ isPlaying, togglePlay }) => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
+  const WEDDING_SONG_SRC = '/assets/aistudio/Rathinamo-Female-Version_f1b1fb37.mp3';
+  const WEDDING_SONG_START_SEC = 67; // 1m 07s
+
   useEffect(() => {
-    // Using a serene instrumental sitar & flute audio stream
-    audioRef.current = new Audio('https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf756.mp3?filename=indian-meditation-sitar-flute-111425.mp3');
-    audioRef.current.loop = true;
-    audioRef.current.volume = 0.4;
+    const audio = new Audio(WEDDING_SONG_SRC);
+    audio.preload = 'auto';
+    audio.loop = false;
+    audio.volume = 0.55;
+
+    const ensureStartOffset = () => {
+      if (audio.currentTime < WEDDING_SONG_START_SEC - 0.5) {
+        try {
+          audio.currentTime = WEDDING_SONG_START_SEC;
+        } catch {
+          // Will retry when metadata is ready
+        }
+      }
+    };
+
+    const handleEnded = () => {
+      audio.currentTime = WEDDING_SONG_START_SEC;
+      audio.play().catch(() => {});
+    };
+
+    audio.addEventListener('loadedmetadata', ensureStartOffset);
+    audio.addEventListener('playing', ensureStartOffset);
+    audio.addEventListener('ended', handleEnded);
+    audioRef.current = audio;
 
     return () => {
-      if (audioRef.current) {
-        audioRef.current.pause();
-        audioRef.current = null;
-      }
+      audio.removeEventListener('loadedmetadata', ensureStartOffset);
+      audio.removeEventListener('playing', ensureStartOffset);
+      audio.removeEventListener('ended', handleEnded);
+      audio.pause();
+      audioRef.current = null;
     };
   }, []);
 
   useEffect(() => {
-    if (!audioRef.current) return;
+    const audio = audioRef.current;
+    if (!audio) return;
     if (isPlaying) {
-      audioRef.current.play().catch(() => {
+      if (audio.currentTime < WEDDING_SONG_START_SEC - 0.5) {
+        try {
+          audio.currentTime = WEDDING_SONG_START_SEC;
+        } catch {
+          // Will seek on metadata load
+        }
+      }
+      audio.play().catch(() => {
         // Autoplay policy handling
       });
     } else {
-      audioRef.current.pause();
+      audio.pause();
     }
   }, [isPlaying]);
 

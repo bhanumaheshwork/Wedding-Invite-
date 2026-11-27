@@ -199,7 +199,7 @@ const IndianMotif: React.FC<{ type: MotifType; color: string; className?: string
 
 const StoryCardBody: React.FC<{ chapter: StoryChapter; total: number }> = ({ chapter, total }) => (
   <div
-    className="relative w-full h-full bg-[#fcf7ea] text-[#5c1a1b] rounded-[1.75rem] border border-[#c59436]/55 px-8 py-9 sm:px-12 sm:py-11 lg:px-[clamp(2.6rem,4.5vw,4.1rem)] lg:py-[clamp(2.1rem,4.2vh,3.1rem)] shadow-[0_24px_60px_-20px_rgba(92,26,27,0.3)] flex flex-col justify-between overflow-hidden"
+    className="relative w-full h-full bg-[#fcf7ea] text-[#5c1a1b] rounded-[1.75rem] lg:rounded-[2.1rem] border border-[#c59436]/55 px-8 py-9 sm:px-12 sm:py-11 lg:px-[clamp(3.6rem,5.5vw,5.4rem)] lg:pt-[clamp(3.6rem,7.2vh,5.2rem)] lg:pb-[clamp(4.2rem,8.2vh,5.8rem)] shadow-[0_28px_70px_-20px_rgba(92,26,27,0.32)] flex flex-col justify-between overflow-hidden"
   >
     {/* Unified Fine-Art Rajasthani Stationery Background */}
     <img
@@ -207,7 +207,7 @@ const StoryCardBody: React.FC<{ chapter: StoryChapter; total: number }> = ({ cha
       alt=""
       aria-hidden="true"
       referrerPolicy="no-referrer"
-      className="pointer-events-none select-none absolute inset-0 w-full h-full object-cover object-center scale-[1.06]"
+      className="pointer-events-none select-none absolute inset-0 w-full h-full object-cover object-center scale-[1.05]"
     />
 
     {/* Subtle luminous center ivory wash so Royal Maroon text stays crisp while painted borders & palace shine */}
@@ -216,13 +216,13 @@ const StoryCardBody: React.FC<{ chapter: StoryChapter; total: number }> = ({ cha
       className="pointer-events-none absolute inset-0"
       style={{
         background:
-          'radial-gradient(ellipse 74% 66% at 50% 47%, rgba(252,247,234,0.72) 0%, rgba(252,247,234,0.28) 68%, rgba(252,247,234,0.04) 100%)',
+          'radial-gradient(ellipse 72% 62% at 50% 46%, rgba(252,247,234,0.74) 0%, rgba(252,247,234,0.28) 68%, rgba(252,247,234,0.03) 100%)',
       }}
     />
 
     {/* Top Editorial Metadata & Unique Indian Motif */}
     <div className="relative z-10 flex items-center justify-between gap-4 px-1">
-      <div className="flex items-center gap-2 font-archivo text-[0.76rem] sm:text-[0.84rem] lg:text-[clamp(0.68rem,1.25vh,0.82rem)] tracking-[0.14em] uppercase tabular-nums text-[#8f661d]">
+      <div className="flex items-center gap-2 font-archivo text-[0.76rem] sm:text-[0.84rem] lg:text-[clamp(0.76rem,1.45vh,0.95rem)] tracking-[0.14em] uppercase tabular-nums text-[#8f661d]">
         <span>Chapter {chapter.number}</span>
         <span aria-hidden="true">·</span>
         <span>{chapter.era}</span>
@@ -230,29 +230,29 @@ const StoryCardBody: React.FC<{ chapter: StoryChapter; total: number }> = ({ cha
       <IndianMotif
         type={chapter.motif}
         color="#ef4a23"
-        className="w-9 h-9 sm:w-11 sm:h-11 lg:w-[clamp(2rem,4.2vh,2.75rem)] lg:h-[clamp(2rem,4.2vh,2.75rem)] shrink-0"
+        className="w-9 h-9 sm:w-11 sm:h-11 lg:w-[clamp(2.5rem,5vh,3.4rem)] lg:h-[clamp(2.5rem,5vh,3.4rem)] shrink-0"
       />
     </div>
 
     {/* Main Narrative Typography */}
-    <div className="relative z-10 my-5 sm:my-7 lg:my-[clamp(0.75rem,2vh,1.65rem)] px-1 space-y-2.5 sm:space-y-3.5">
+    <div className="relative z-10 my-5 sm:my-7 lg:my-[clamp(1rem,2.5vh,2.2rem)] px-1 space-y-2.5 sm:space-y-3.5 lg:space-y-[clamp(0.85rem,1.8vh,1.4rem)]">
       <h3
-        className="font-archivo text-[2rem] sm:text-[2.7rem] lg:text-[clamp(1.8rem,4.1vh,2.9rem)] font-extrabold uppercase tracking-[-0.025em] leading-[0.94] text-[#5c1a1b]"
+        className="font-archivo text-[2rem] sm:text-[2.7rem] lg:text-[clamp(2.35rem,5.1vh,3.65rem)] font-extrabold uppercase tracking-[-0.025em] leading-[0.94] text-[#5c1a1b]"
         style={{ textWrap: 'balance' }}
       >
         {chapter.title}
       </h3>
-      <p className="font-playfair text-[1.06rem] sm:text-[1.22rem] lg:text-[clamp(0.92rem,1.95vh,1.22rem)] leading-[1.46] max-w-[42ch] text-[#5c1a1b]/90">
+      <p className="font-playfair text-[1.06rem] sm:text-[1.22rem] lg:text-[clamp(1.08rem,2.3vh,1.48rem)] leading-[1.48] max-w-[44ch] text-[#5c1a1b]/90">
         {chapter.body}
       </p>
     </div>
 
     {/* Bottom Editorial Hairline Footer */}
-    <div className="relative z-10 pt-3 sm:pt-3.5 lg:pt-[clamp(0.55rem,1.2vh,0.85rem)] px-1 border-t border-[#c59436]/45 flex items-center justify-between gap-4">
-      <p className="font-playfair italic text-[0.92rem] sm:text-[1rem] lg:text-[clamp(0.8rem,1.45vh,0.95rem)] leading-snug text-[#5c1a1b]/85">
+    <div className="relative z-10 pt-3 sm:pt-3.5 lg:pt-[clamp(0.7rem,1.5vh,1.1rem)] px-1 border-t border-[#c59436]/45 flex items-center justify-between gap-4">
+      <p className="font-playfair italic text-[0.92rem] sm:text-[1rem] lg:text-[clamp(0.9rem,1.7vh,1.1rem)] leading-snug text-[#5c1a1b]/85">
         {chapter.footnote}
       </p>
-      <span className="font-archivo text-[0.78rem] lg:text-[clamp(0.68rem,1.2vh,0.78rem)] tracking-[0.12em] uppercase tabular-nums whitespace-nowrap shrink-0 text-[#8f661d]">
+      <span className="font-archivo text-[0.78rem] lg:text-[clamp(0.78rem,1.4vh,0.92rem)] tracking-[0.12em] uppercase tabular-nums whitespace-nowrap shrink-0 text-[#8f661d]">
         {chapter.number} / 0{total}
       </span>
     </div>
@@ -355,8 +355,9 @@ export const LoveStoryStack: React.FC = () => {
         end: () => `+=${window.innerHeight * 1.12 * totalDuration}`,
         pin: pinRef.current,
         pinSpacing: true,
+        anticipatePin: 1,
         scrub: 0.35,
-        refreshPriority: 1,
+        refreshPriority: 2,
         invalidateOnRefresh: true,
         onUpdate: (self) => {
           tl.progress(self.progress);
@@ -472,12 +473,12 @@ export const LoveStoryStack: React.FC = () => {
       id="story"
       ref={sectionRef}
       aria-labelledby="love-story-heading"
-      className="relative z-20 isolate bg-[#faf3e4] text-[#5c1a1b]"
+      className="relative z-20 isolate bg-[#faf3e4] text-[#5c1a1b] overflow-x-clip"
     >
       {/* DESKTOP (>= 1024px): Pinned 100vh 3D Peeling Stack */}
       <div
         ref={pinRef}
-        className="hidden lg:grid h-screen w-full grid-cols-12 gap-8 px-12 xl:px-20 pt-[min(5.25rem,10.5vh)] pb-[min(1.75rem,3.5vh)] items-center overflow-hidden bg-[#faf3e4]"
+        className="hidden lg:grid h-screen w-full grid-cols-12 gap-6 px-10 xl:px-16 pt-[min(2.5rem,4.5vh)] pb-[min(2rem,4vh)] items-center overflow-hidden bg-[#faf3e4]"
       >
         {/* Left Editorial Column */}
         <div className="col-span-5 flex flex-col justify-center gap-[clamp(0.9rem,2.2vh,1.75rem)] z-10 min-h-0">
@@ -560,7 +561,7 @@ export const LoveStoryStack: React.FC = () => {
                 ref={(el) => {
                   slideRefs.current[idx] = el;
                 }}
-                className="absolute left-1/2 top-[55%] w-[min(42rem,48vw)] min-h-[min(24.5rem,54vh)]"
+                className="absolute left-1/2 top-[53%] w-[min(54rem,56vw,96vh)] h-[min(40rem,74vh)]"
                 style={{ translate: '-50% -50%' }}
               >
                 <StoryCardBody chapter={chapter} total={STORY_CHAPTERS.length} />
@@ -617,7 +618,7 @@ export const LoveStoryStack: React.FC = () => {
           </div>
 
           {/* Sticky Stacked Cards (Falls back to plain list under prefers-reduced-motion) */}
-          <div className="space-y-6 pb-8">
+          <div className="space-y-6 pb-12">
             {STORY_CHAPTERS.map((chapter, idx) => (
               <article
                 key={chapter.id}
@@ -630,7 +631,7 @@ export const LoveStoryStack: React.FC = () => {
                   prefersReducedMotion
                     ? undefined
                     : {
-                        top: `calc(4.75rem + ${idx * 12}px)`,
+                        top: `calc(1.25rem + ${idx * 10}px)`,
                         zIndex: idx + 1,
                       }
                 }

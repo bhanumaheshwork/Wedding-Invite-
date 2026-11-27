@@ -115,6 +115,8 @@ export const ElegantCountdown: React.FC = () => {
           end: () => `+=${Math.round(window.innerHeight * 0.65)}`,
           pin: pinWrapperRef.current,
           pinSpacing: true,
+          anticipatePin: 1,
+          refreshPriority: 3,
           scrub: 0.4,
           invalidateOnRefresh: true,
           onUpdate: (self) => {
@@ -146,16 +148,16 @@ export const ElegantCountdown: React.FC = () => {
       id="countdown"
       ref={sectionRef}
       aria-labelledby="countdown-heading"
-      className="relative bg-[#faf3e4] text-[#5c1a1b] overflow-hidden"
+      className="relative z-20 isolate bg-[#faf3e4] text-[#5c1a1b] overflow-x-clip"
     >
       <div
         ref={pinWrapperRef}
-        className="w-full py-16 sm:py-20 lg:py-0 lg:min-h-screen flex items-center justify-center px-4 sm:px-8"
+        className="w-full py-16 sm:py-20 lg:py-0 lg:h-screen lg:overflow-hidden bg-[#faf3e4] flex items-center justify-center px-4 sm:px-8"
       >
         {/* Editorial Gold-Leaf Framed Plaque */}
         <div
           ref={plaqueRef}
-          className="relative w-full max-w-5xl mx-auto bg-[#fcf8ee] px-6 py-10 sm:px-12 sm:py-14 lg:px-16 lg:py-16 rounded-[1.5rem] sm:rounded-[2rem] shadow-[0_24px_70px_-30px_rgba(141,97,24,0.28)] overflow-hidden"
+          className="relative w-full max-w-5xl mx-auto bg-[#fcf8ee] px-6 py-10 sm:px-12 sm:py-14 lg:px-16 lg:py-[clamp(2rem,4.5vh,3.75rem)] rounded-[1.5rem] sm:rounded-[2rem] shadow-[0_24px_70px_-30px_rgba(141,97,24,0.28)] overflow-hidden"
         >
           {/* Animated Gold-Leaf Shimmer Sweep (Compositor-only transform/opacity) */}
           <div

@@ -209,6 +209,7 @@ export const WeddingEventsFlow: React.FC<WeddingEventsFlowProps> = ({ onRsvpClic
               start,
               end,
               scrub: 0.65,
+              refreshPriority: 1,
               invalidateOnRefresh: true,
             },
           });
@@ -262,6 +263,7 @@ export const WeddingEventsFlow: React.FC<WeddingEventsFlowProps> = ({ onRsvpClic
                 start: 'top 86%',
                 end: 'top 28%',
                 scrub: 0.6,
+                refreshPriority: 1,
                 invalidateOnRefresh: true,
               },
             });
@@ -278,9 +280,9 @@ export const WeddingEventsFlow: React.FC<WeddingEventsFlowProps> = ({ onRsvpClic
             });
           }
 
-          // 3. Desktop subtle vertical parallax depth on event cards
+          // 3. Desktop subtle vertical parallax depth bounded safely inside section padding
           if (isDesktop && !reduceMotion) {
-            const offset = idx % 2 === 0 ? 48 : 72;
+            const offset = idx % 2 === 0 ? 28 : 42;
             const parallaxTween = gsap.fromTo(
               card,
               { y: offset },
@@ -292,6 +294,7 @@ export const WeddingEventsFlow: React.FC<WeddingEventsFlowProps> = ({ onRsvpClic
                   start: 'top bottom',
                   end: 'bottom top',
                   scrub: true,
+                  refreshPriority: 1,
                   invalidateOnRefresh: true,
                 },
               }
@@ -355,31 +358,32 @@ export const WeddingEventsFlow: React.FC<WeddingEventsFlowProps> = ({ onRsvpClic
       id="family"
       ref={sectionRef}
       aria-labelledby="events-flow-heading"
-      className="relative z-10 isolate bg-[#f7eedb] text-[#5c1a1b]"
+      className="relative z-10 isolate bg-[#f7eedb] text-[#5c1a1b] overflow-x-clip"
     >
-      {/* Sticky Full-Viewport Hand-Painted Indian Wedding Art Background */}
-      <div className="sticky top-0 h-screen w-full overflow-hidden pointer-events-none select-none z-0">
-        <img
-          src="/src/assets/images/events_mural_bg_1795781142569.jpg"
-          alt=""
-          aria-hidden="true"
-          referrerPolicy="no-referrer"
-          className="w-full h-full object-cover object-center"
-        />
-        {/* Soft warm-ivory atmospheric wash keeping painted palace domes & lotuses visible while preserving crisp center contrast */}
-        <div
-          className="absolute inset-0"
-          style={{
-            background:
-              'radial-gradient(ellipse 68% 62% at 50% 48%, rgba(250,243,228,0.88) 0%, rgba(250,243,228,0.52) 58%, rgba(247,238,219,0.22) 100%)',
-          }}
-        />
+      {/* Full-Section Track Holding the Sticky Hand-Painted Indian Wedding Art Background (Zero Negative Margin) */}
+      <div className="pointer-events-none select-none absolute inset-0 z-0">
+        <div className="sticky top-0 h-screen w-full overflow-hidden">
+          <img
+            src="/src/assets/images/events_mural_bg_1795781142569.jpg"
+            alt=""
+            aria-hidden="true"
+            referrerPolicy="no-referrer"
+            className="w-full h-full object-cover object-center"
+          />
+          {/* Soft warm-ivory atmospheric wash keeping painted palace domes & lotuses visible while preserving crisp center contrast */}
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                'radial-gradient(ellipse 68% 62% at 50% 48%, rgba(250,243,228,0.88) 0%, rgba(250,243,228,0.52) 58%, rgba(247,238,219,0.22) 100%)',
+            }}
+          />
+        </div>
       </div>
 
-      {/* Foreground Content Layer pulled seamlessly over the sticky painted mural */}
-      <div className="relative z-10 -mt-[100vh]">
-        {/* Desktop Sticky Center Title Backdrop (Stays framed in the mural center while Day 1-6 cards rise on left & right) */}
-        <div className="hidden lg:flex sticky top-0 h-screen items-center justify-center pointer-events-none z-10 px-6">
+      {/* Desktop Sticky Center Title Track (Zero Negative Margin) */}
+      <div className="hidden lg:block pointer-events-none absolute inset-0 z-10">
+        <div className="sticky top-0 h-screen flex items-center justify-center px-6">
           <div
             ref={desktopFloralRef}
             className="max-w-md xl:max-w-lg text-center pointer-events-auto flex flex-col items-center space-y-4"
@@ -433,7 +437,10 @@ export const WeddingEventsFlow: React.FC<WeddingEventsFlowProps> = ({ onRsvpClic
             <StickyBotanicalGarlandSVG inverted className="w-56 xl:w-64 h-auto opacity-85 pt-1" />
           </div>
         </div>
+      </div>
 
+      {/* Foreground Content Layer in Clean Document Flow */}
+      <div className="relative z-20">
         {/* Mobile & Tablet Header (< 1024px) */}
         <div
           ref={mobileFloralRef}
@@ -486,7 +493,7 @@ export const WeddingEventsFlow: React.FC<WeddingEventsFlowProps> = ({ onRsvpClic
         </div>
 
         {/* Chronological 6-Day Event Cards Flow (Desktop staggered left/right framing center title; Mobile clean single column) */}
-        <div className="relative z-20 max-w-[88rem] mx-auto px-4 sm:px-6 lg:px-10 pb-24 lg:pb-36 lg:-mt-[55vh] space-y-8 lg:space-y-24">
+        <div className="relative z-20 max-w-[88rem] mx-auto px-4 sm:px-6 lg:px-10 pt-2 lg:pt-[20vh] pb-24 lg:pb-[22vh] space-y-8 lg:space-y-24">
           {WEDDING_EVENTS.map((event, idx) => {
             const alignClass =
               event.side === 'left'

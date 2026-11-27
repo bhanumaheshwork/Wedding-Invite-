@@ -1,4 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import confetti from 'canvas-confetti';
 import { Calendar, MapPin, X, Volume2, VolumeX } from 'lucide-react';
 import { LoveStoryStack } from './LoveStoryStack';
@@ -7,6 +9,8 @@ import { WeddingEventsFlow } from './WeddingEventsFlow';
 import { IntroRibbonWipe, hasSeenIntroBefore } from './IntroRibbonWipe';
 import { ScratchRevealInvite } from './ScratchRevealInvite';
 
+gsap.registerPlugin(ScrollTrigger);
+
 export const KolibrieWeddingApp: React.FC = () => {
   const [showIntroWipe, setShowIntroWipe] = useState<boolean>(() => !hasSeenIntroBefore());
   const [pageReady, setPageReady] = useState<boolean>(() => hasSeenIntroBefore());
@@ -14,17 +18,104 @@ export const KolibrieWeddingApp: React.FC = () => {
   const [rsvpSubmitted, setRsvpSubmitted] = useState(false);
   const [isPlayingMusic, setIsPlayingMusic] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const musicBtnRef = useRef<HTMLButtonElement | null>(null);
+  const userMutedRef = useRef(false);
+  const mainRef = useRef<HTMLElement>(null);
+
+  const WEDDING_SONG_SRC = '/assets/aistudio/Rathinamo-Female-Version_f1b1fb37.mp3';
+  const WEDDING_SONG_START_SEC = 67; // 1m 07s
 
   useEffect(() => {
-    // Audio stream initialization
-    audioRef.current = new Audio('https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf756.mp3?filename=indian-meditation-sitar-flute-111425.mp3');
-    audioRef.current.loop = true;
-    audioRef.current.volume = 0.35;
+    const audio = new Audio(WEDDING_SONG_SRC);
+    audio.preload = 'auto';
+    audio.loop = false;
+    audio.volume = 0.55;
+    audioRef.current = audio;
+
+    const ensureStartOffset = () => {
+      if (audio.currentTime < WEDDING_SONG_START_SEC - 0.5) {
+        try {
+          audio.currentTime = WEDDING_SONG_START_SEC;
+        } catch {
+          // Will seek once metadata is ready
+        }
+      }
+    };
+
+    const handleEnded = () => {
+      if (userMutedRef.current) return;
+      audio.currentTime = WEDDING_SONG_START_SEC;
+      audio.play().catch(() => {
+        setIsPlayingMusic(false);
+      });
+    };
+
+    const handlePlay = () => {
+      ensureStartOffset();
+      setIsPlayingMusic(true);
+      removeUnlockListeners();
+    };
+
+    const handlePause = () => {
+      setIsPlayingMusic(false);
+    };
+
+    const removeUnlockListeners = () => {
+      window.removeEventListener('pointerdown', handleFirstInteraction, true);
+      window.removeEventListener('touchstart', handleFirstInteraction, true);
+      window.removeEventListener('click', handleFirstInteraction, true);
+      window.removeEventListener('keydown', handleFirstInteraction, true);
+    };
+
+    const tryAutoPlay = () => {
+      if (userMutedRef.current) return;
+      ensureStartOffset();
+      audio
+        .play()
+        .then(() => {
+          ensureStartOffset();
+          setIsPlayingMusic(true);
+          removeUnlockListeners();
+        })
+        .catch(() => {
+          // Browser blocked unmuted autoplay until first user gesture
+          setIsPlayingMusic(false);
+        });
+    };
+
+    const handleFirstInteraction = (e: Event) => {
+      if (userMutedRef.current) {
+        removeUnlockListeners();
+        return;
+      }
+      // Let the music button's own onClick handle taps on the toggle button
+      if (musicBtnRef.current && e.target instanceof Node && musicBtnRef.current.contains(e.target)) {
+        return;
+      }
+      tryAutoPlay();
+    };
+
+    audio.addEventListener('loadedmetadata', ensureStartOffset);
+    audio.addEventListener('playing', handlePlay);
+    audio.addEventListener('pause', handlePause);
+    audio.addEventListener('ended', handleEnded);
+
+    // Register first-gesture unlock listeners first, then attempt immediate autoplay
+    window.addEventListener('pointerdown', handleFirstInteraction, { capture: true, passive: true });
+    window.addEventListener('touchstart', handleFirstInteraction, { capture: true, passive: true });
+    window.addEventListener('click', handleFirstInteraction, { capture: true, passive: true });
+    window.addEventListener('keydown', handleFirstInteraction, { capture: true, passive: true });
+
+    tryAutoPlay();
 
     return () => {
-      if (audioRef.current) {
-        audioRef.current.pause();
-      }
+      removeUnlockListeners();
+      audio.removeEventListener('loadedmetadata', ensureStartOffset);
+      audio.removeEventListener('playing', handlePlay);
+      audio.removeEventListener('pause', handlePause);
+      audio.removeEventListener('ended', handleEnded);
+      audio.pause();
+      audioRef.current = null;
     };
   }, []);
 
@@ -34,14 +125,85 @@ export const KolibrieWeddingApp: React.FC = () => {
     }
   }, [pageReady]);
 
+  // Keep all GSAP pinned sections perfectly synchronized after fonts, images, and layout settle in production
+  useEffect(() => {
+    let timerId: number | null = null;
+    const scheduleRefresh = () => {
+      if (timerId !== null) window.clearTimeout(timerId);
+      timerId = window.setTimeout(() => {
+        ScrollTrigger.refresh();
+      }, 100);
+    };
+
+    scheduleRefresh();
+    window.addEventListener('load', scheduleRefresh);
+    document.fonts?.ready.then(scheduleRefresh);
+
+    const mainEl = mainRef.current;
+    const imgCleanups: Array<() => void> = [];
+    let ro: ResizeObserver | null = null;
+
+    if (mainEl) {
+      const imgs = Array.from(mainEl.querySelectorAll('img'));
+      imgs.forEach((img) => {
+        if (!img.complete) {
+          img.addEventListener('load', scheduleRefresh, { once: true });
+          img.addEventListener('error', scheduleRefresh, { once: true });
+          imgCleanups.push(() => {
+            img.removeEventListener('load', scheduleRefresh);
+            img.removeEventListener('error', scheduleRefresh);
+          });
+        }
+      });
+
+      // Observe only non-pinned sections above pinned triggers to avoid pin-spacer feedback loops
+      if (typeof ResizeObserver !== 'undefined') {
+        ro = new ResizeObserver(scheduleRefresh);
+        const scratchEl = mainEl.querySelector('#scratch-invite');
+        const celebrationsEl = mainEl.querySelector('#celebrations');
+        if (scratchEl) ro.observe(scratchEl);
+        if (celebrationsEl) ro.observe(celebrationsEl);
+      }
+    }
+
+    return () => {
+      if (timerId !== null) window.clearTimeout(timerId);
+      window.removeEventListener('load', scheduleRefresh);
+      imgCleanups.forEach((fn) => fn());
+      ro?.disconnect();
+    };
+  }, [pageReady, showIntroWipe]);
+
   const toggleMusic = () => {
-    if (!audioRef.current) return;
-    if (isPlayingMusic) {
-      audioRef.current.pause();
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    if (!audio.paused) {
+      userMutedRef.current = true;
+      audio.pause();
       setIsPlayingMusic(false);
     } else {
-      audioRef.current.play().catch(() => {});
-      setIsPlayingMusic(true);
+      userMutedRef.current = false;
+      const seekIfNeeded = () => {
+        if (audio.currentTime < WEDDING_SONG_START_SEC - 0.5) {
+          try {
+            audio.currentTime = WEDDING_SONG_START_SEC;
+          } catch {
+            // Seek will retry on loadedmetadata / playing
+          }
+        }
+      };
+
+      seekIfNeeded();
+      audio
+        .play()
+        .then(() => {
+          seekIfNeeded();
+          setIsPlayingMusic(true);
+        })
+        .catch(() => {
+          setIsPlayingMusic(false);
+        });
     }
   };
 
@@ -60,18 +222,22 @@ export const KolibrieWeddingApp: React.FC = () => {
 
       {/* Music Toggle Floating Button */}
       <button
+        ref={musicBtnRef}
+        type="button"
         onClick={toggleMusic}
-        className="fixed bottom-6 right-6 z-40 bg-[#faf3e4] text-[#5c1a1b] border-2 border-[#5c1a1b] p-3 rounded-full shadow-lg hover:bg-[#ef4a23] hover:border-[#ef4a23] hover:text-white transition-all flex items-center gap-2 font-archivo text-xs uppercase tracking-wider"
+        aria-label={isPlayingMusic ? 'Mute wedding music' : 'Play wedding music'}
+        aria-pressed={isPlayingMusic}
+        className="fixed bottom-6 right-6 z-40 bg-[#faf3e4] text-[#5c1a1b] border-2 border-[#5c1a1b] p-3 rounded-full shadow-lg hover:bg-[#ef4a23] hover:border-[#ef4a23] hover:text-white transition-all flex items-center gap-2 font-archivo text-xs uppercase tracking-wider cursor-pointer"
       >
         {isPlayingMusic ? <Volume2 className="w-4 h-4 animate-pulse" /> : <VolumeX className="w-4 h-4" />}
-        <span className="hidden sm:inline">{isPlayingMusic ? "Sound On" : "Play Music"}</span>
+        <span className="hidden sm:inline">{isPlayingMusic ? "Mute" : "Play Music"}</span>
       </button>
 
-      <main className={`transition-opacity duration-700 ${pageReady ? 'opacity-100' : 'opacity-0'}`}>
+      <main ref={mainRef} className={`transition-opacity duration-700 ${pageReady ? 'opacity-100' : 'opacity-0'}`}>
         
         {/* 5.4 Hero */}
         <section 
-          className="relative h-screen w-full overflow-hidden flex items-center justify-center cursor-default select-none"
+          className="relative z-10 isolate bg-[#faf3e4] h-screen w-full overflow-hidden flex items-center justify-center cursor-default select-none"
         >
           {/* Background Video */}
           <video
@@ -141,7 +307,7 @@ export const KolibrieWeddingApp: React.FC = () => {
         {/* 5.5 Bride & Groom Showcase with Royal Indian Wedding Art Background */}
         <section
           id="celebrations"
-          className="relative py-24 md:py-36 px-5 sm:px-8 bg-[#faf3e4] overflow-hidden"
+          className="relative z-10 isolate py-24 md:py-36 px-5 sm:px-8 bg-[#faf3e4] overflow-hidden"
         >
           {/* Full-Section Fine-Art Indian Wedding Background */}
           <div className="absolute inset-0 z-0 pointer-events-none select-none">
@@ -251,7 +417,7 @@ export const KolibrieWeddingApp: React.FC = () => {
         <WeddingEventsFlow onRsvpClick={() => setRsvpOpen(true)} />
 
         {/* Footer / Final Invitation */}
-        <footer className="py-24 px-6 bg-[#471418] text-[#faf3e4] text-center">
+        <footer className="relative z-20 isolate py-24 px-6 bg-[#471418] text-[#faf3e4] text-center">
           <div className="max-w-3xl mx-auto space-y-6">
             <span className="font-yellowtail text-5xl text-[#ffd46e]">Ram & Sita</span>
             <h2 className="font-archivo text-4xl sm:text-6xl font-bold uppercase tracking-tight">
