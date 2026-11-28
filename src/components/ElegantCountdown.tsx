@@ -148,7 +148,7 @@ export const ElegantCountdown: React.FC = () => {
       id="countdown"
       ref={sectionRef}
       aria-labelledby="countdown-heading"
-      className="relative z-20 isolate bg-[#faf3e4] text-[#5c1a1b] overflow-x-clip"
+      className="relative z-20 isolate bg-[#faf3e4] text-[#6b1d2f] overflow-x-clip"
     >
       <div
         ref={pinWrapperRef}
@@ -228,7 +228,7 @@ export const ElegantCountdown: React.FC = () => {
           {/* Content Container */}
           <div className="relative z-10 flex flex-col items-center text-center">
             {/* Clean Unboxed Editorial Metadata */}
-            <div className="flex flex-wrap items-center justify-center gap-x-2.5 gap-y-1 font-playfair text-[0.9rem] sm:text-[1.05rem] tracking-[0.14em] uppercase text-[#8f661d]">
+            <div className="flex flex-wrap items-center justify-center gap-x-2.5 gap-y-1 font-archivo text-[0.72rem] sm:text-[0.84rem] tracking-[0.24em] uppercase text-[#9a6b20]">
               <span>Save the Date</span>
               <span aria-hidden="true">·</span>
               <span>December 15, 2026</span>
@@ -239,14 +239,14 @@ export const ElegantCountdown: React.FC = () => {
             {/* Editorial Serif Headline */}
             <h2
               id="countdown-heading"
-              className="font-playfair mt-3 sm:mt-4 text-[#5c1a1b] font-normal leading-[1.02] tracking-[-0.025em]"
+              className="font-playfair mt-3 sm:mt-4 text-[#6b1d2f] font-medium leading-[1.04] tracking-[-0.01em]"
               style={{
-                fontSize: 'clamp(2.15rem, 4.4vw, 4rem)',
+                fontSize: 'clamp(2.25rem, 4.6vw, 4.1rem)',
                 textWrap: 'balance',
               }}
             >
               Counting down to{' '}
-              <span className="italic text-[#ef4a23]">forever</span>
+              <span className="italic text-[#b84a27]">forever</span>
             </h2>
 
             {/* Fine Ornamental Gold Rule */}
@@ -266,14 +266,14 @@ export const ElegantCountdown: React.FC = () => {
 
             {/* Live Editorial Countdown Grid */}
             {isComplete ? (
-              <p className="font-playfair italic text-[1.75rem] sm:text-[2.4rem] text-[#ef4a23] py-6">
+              <p className="font-playfair italic text-[1.75rem] sm:text-[2.4rem] text-[#b84a27] py-6">
                 Today we celebrate the beginning of our forever.
               </p>
             ) : (
               <div
                 role="timer"
                 aria-live="off"
-                aria-label={`${days} days, ${hours} hours, ${minutes} minutes, and ${seconds} seconds until Ram and Sita's wedding`}
+                aria-label={`${days} days, ${hours} hours, ${minutes} minutes, and ${seconds} seconds until Vaibhav and Trisha's wedding`}
                 className="w-full grid grid-cols-2 sm:grid-cols-4 border-y border-[#c59436]/30 divide-[#c59436]/25"
               >
                 {units.map((unit, idx) => (
@@ -286,15 +286,14 @@ export const ElegantCountdown: React.FC = () => {
                     }`}
                   >
                     <span
-                      className="font-playfair tabular-nums leading-none text-[#5c1a1b] tracking-[-0.03em]"
+                      className="font-playfair font-medium tabular-nums leading-none text-[#6b1d2f] tracking-[-0.02em]"
                       style={{
-                        fontSize: 'clamp(2.6rem, 5.4vw, 4.75rem)',
-                        fontVariationSettings: '"wght" 350, "wdth" 92, "opsz" 120',
+                        fontSize: 'clamp(2.8rem, 5.6vw, 4.9rem)',
                       }}
                     >
                       {unit.value}
                     </span>
-                    <span className="mt-2 sm:mt-3 font-playfair italic text-[0.95rem] sm:text-[1.15rem] tracking-[0.06em] text-[#7c5819]">
+                    <span className="mt-2 sm:mt-3 font-archivo text-[0.7rem] sm:text-[0.8rem] uppercase tracking-[0.22em] text-[#9a6b20]">
                       {unit.label}
                     </span>
                   </div>
@@ -303,7 +302,7 @@ export const ElegantCountdown: React.FC = () => {
             )}
 
             {/* Editorial Closing Caption */}
-            <p className="mt-6 sm:mt-8 font-playfair italic text-[1.02rem] sm:text-[1.2rem] text-[#5c1a1b]/75 max-w-lg leading-relaxed">
+            <p className="mt-6 sm:mt-8 font-playfair italic text-[1.15rem] sm:text-[1.35rem] text-[#6b1d2f]/80 max-w-lg leading-relaxed">
               Until the shehnai plays at The Leela Palace by Lake Pichola.
             </p>
           </div>

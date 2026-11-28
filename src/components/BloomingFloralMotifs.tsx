@@ -99,25 +99,25 @@ export const StickyBotanicalGarlandSVG: React.FC<{
       <path
         className="draw-petal bloom-fill"
         d="M86 30 C91 37, 91 44, 86 50 C81 44, 81 37, 86 30 Z"
-        stroke="#ef4a23"
+        stroke="#b84a27"
         strokeWidth="1.3"
-        fill="#ef4a23"
+        fill="#b84a27"
         fillOpacity="0"
       />
       <path
         className="draw-petal bloom-fill"
         d="M86 50 C77 48, 72 42, 72 35 C79 37, 84 42, 86 50 Z"
-        stroke="#ef4a23"
+        stroke="#b84a27"
         strokeWidth="1.2"
-        fill="#ef4a23"
+        fill="#b84a27"
         fillOpacity="0"
       />
       <path
         className="draw-petal bloom-fill"
         d="M86 50 C95 48, 100 42, 100 35 C93 37, 88 42, 86 50 Z"
-        stroke="#ef4a23"
+        stroke="#b84a27"
         strokeWidth="1.2"
-        fill="#ef4a23"
+        fill="#b84a27"
         fillOpacity="0"
       />
     </g>
@@ -126,25 +126,25 @@ export const StickyBotanicalGarlandSVG: React.FC<{
       <path
         className="draw-petal bloom-fill"
         d="M274 30 C279 37, 279 44, 274 50 C269 44, 269 37, 274 30 Z"
-        stroke="#ef4a23"
+        stroke="#b84a27"
         strokeWidth="1.3"
-        fill="#ef4a23"
+        fill="#b84a27"
         fillOpacity="0"
       />
       <path
         className="draw-petal bloom-fill"
         d="M274 50 C265 48, 260 42, 260 35 C267 37, 272 42, 274 50 Z"
-        stroke="#ef4a23"
+        stroke="#b84a27"
         strokeWidth="1.2"
-        fill="#ef4a23"
+        fill="#b84a27"
         fillOpacity="0"
       />
       <path
         className="draw-petal bloom-fill"
         d="M274 50 C283 48, 288 42, 288 35 C281 37, 276 42, 274 50 Z"
-        stroke="#ef4a23"
+        stroke="#b84a27"
         strokeWidth="1.2"
-        fill="#ef4a23"
+        fill="#b84a27"
         fillOpacity="0"
       />
     </g>
@@ -158,7 +158,7 @@ export const StickyBotanicalGarlandSVG: React.FC<{
         stroke="#c59436"
         strokeWidth="1.5"
         strokeLinejoin="round"
-        fill="#ffd46e"
+        fill="#e8c678"
         fillOpacity="0"
       />
       <path
@@ -167,36 +167,36 @@ export const StickyBotanicalGarlandSVG: React.FC<{
         stroke="#c59436"
         strokeWidth="1.5"
         strokeLinejoin="round"
-        fill="#ffd46e"
+        fill="#e8c678"
         fillOpacity="0"
       />
       {/* Mid petals */}
       <path
         className="draw-petal bloom-fill"
         d="M180 72 C162 64, 152 49, 152 31 C166 36, 175 50, 180 72 Z"
-        stroke="#ef4a23"
+        stroke="#b84a27"
         strokeWidth="1.6"
         strokeLinejoin="round"
-        fill="#ef4a23"
+        fill="#b84a27"
         fillOpacity="0"
       />
       <path
         className="draw-petal bloom-fill"
         d="M180 72 C198 64, 208 49, 208 31 C194 36, 185 50, 180 72 Z"
-        stroke="#ef4a23"
+        stroke="#b84a27"
         strokeWidth="1.6"
         strokeLinejoin="round"
-        fill="#ef4a23"
+        fill="#b84a27"
         fillOpacity="0"
       />
       {/* Center crown petal */}
       <path
         className="draw-petal bloom-fill"
         d="M180 14 C191 31, 192 52, 180 72 C168 52, 169 31, 180 14 Z"
-        stroke="#ef4a23"
+        stroke="#b84a27"
         strokeWidth="1.8"
         strokeLinejoin="round"
-        fill="#ef4a23"
+        fill="#b84a27"
         fillOpacity="0"
       />
       {/* Center vein line */}
@@ -211,8 +211,8 @@ export const StickyBotanicalGarlandSVG: React.FC<{
 
     {/* Pollen & dewdrop gold accents */}
     <circle className="bloom-dot" cx="180" cy="84" r="2.6" fill="#c59436" />
-    <circle className="bloom-dot" cx="150" cy="79" r="1.8" fill="#ef4a23" />
-    <circle className="bloom-dot" cx="210" cy="79" r="1.8" fill="#ef4a23" />
+    <circle className="bloom-dot" cx="150" cy="79" r="1.8" fill="#b84a27" />
+    <circle className="bloom-dot" cx="210" cy="79" r="1.8" fill="#b84a27" />
     <circle className="bloom-dot" cx="26" cy="54" r="2" fill="#c59436" />
     <circle className="bloom-dot" cx="334" cy="54" r="2" fill="#c59436" />
   </svg>
@@ -323,7 +323,7 @@ export const EventFloralCrestSVG: React.FC<{
       // Radiant Sunburst Marigold Bloom
       return (
         <svg viewBox="0 0 64 64" fill="none" aria-hidden="true" className={`overflow-visible ${className}`}>
-          <circle className="card-draw-stem" cx="32" cy="32" r="7" stroke="#ef4a23" strokeWidth="1.6" />
+          <circle className="card-draw-stem" cx="32" cy="32" r="7" stroke="#b84a27" strokeWidth="1.6" />
           {[0, 45, 90, 135, 180, 225, 270, 315].map((deg) => (
             <path
               key={deg}
@@ -332,12 +332,12 @@ export const EventFloralCrestSVG: React.FC<{
               stroke={accentHex}
               strokeWidth="1.5"
               strokeLinejoin="round"
-              fill="#ffd46e"
+              fill="#e8c678"
               fillOpacity="0"
               transform={`rotate(${deg} 32 32)`}
             />
           ))}
-          <circle className="card-bloom-dot" cx="32" cy="32" r="3" fill="#ef4a23" />
+          <circle className="card-bloom-dot" cx="32" cy="32" r="3" fill="#b84a27" />
         </svg>
       );
 
@@ -418,7 +418,7 @@ export const EventFloralCrestSVG: React.FC<{
             stroke="#c59436"
             strokeWidth="1.4"
             strokeLinejoin="round"
-            fill="#ffd46e"
+            fill="#e8c678"
             fillOpacity="0"
           />
           <path
@@ -427,7 +427,7 @@ export const EventFloralCrestSVG: React.FC<{
             stroke="#c59436"
             strokeWidth="1.4"
             strokeLinejoin="round"
-            fill="#ffd46e"
+            fill="#e8c678"
             fillOpacity="0"
           />
           <path
@@ -490,9 +490,9 @@ export const EventFloralCrestSVG: React.FC<{
           <path
             className="card-draw-petal"
             d="M32 27 C36 27, 38 30, 38 33 C38 36.5, 35.5 39, 32 39 C28.5 39, 26 36.5, 26 33 C26 30, 28.5 27, 32 27 Z"
-            stroke="#ef4a23"
+            stroke="#b84a27"
             strokeWidth="1.4"
-            fill="#ef4a23"
+            fill="#b84a27"
             fillOpacity="0"
           />
           <circle className="card-bloom-dot" cx="32" cy="33" r="2.2" fill="#c59436" />

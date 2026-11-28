@@ -25,7 +25,7 @@ interface RosePetal {
 
 const PETAL_PALETTES: Array<[string, string]> = [
   ['#d92638', '#8f1222'], // Deep Indian bridal rose
-  ['#ef4a23', '#b82914'], // Vermilion sindoor petal
+  ['#b84a27', '#8b2416'], // Saffron sindoor petal
   ['#f26d85', '#c83454'], // Warm coral rose
   ['#f7a8bc', '#df6283'], // Soft blush gulab
   ['#e13b56', '#9b1831'], // Velvet crimson
@@ -53,7 +53,7 @@ export const ScratchRevealInvite: React.FC = () => {
   const [scratchProgress, setScratchProgress] = useState(0);
   const [hasInteracted, setHasInteracted] = useState(false);
 
-  // Paint the metallic royal gold-leaf foil onto the scratch canvas
+  // Paint the metallic red-burgundy foil onto the scratch canvas
   const paintGoldFoil = useCallback(() => {
     const canvas = scratchCanvasRef.current;
     if (!canvas) return;
@@ -80,92 +80,107 @@ export const ScratchRevealInvite: React.FC = () => {
     ctx.globalCompositeOperation = 'source-over';
     ctx.clearRect(0, 0, w, h);
 
-    // Metallic brushed gold-leaf radial + linear sheen
+    // Brushed metallic red-burgundy foil diagonal sheen
     const grad = ctx.createLinearGradient(0, 0, w, h);
-    grad.addColorStop(0, '#c6922e');
-    grad.addColorStop(0.24, '#f3dc93');
-    grad.addColorStop(0.48, '#d4a13c');
-    grad.addColorStop(0.72, '#fae6a8');
-    grad.addColorStop(1, '#a8741e');
+    grad.addColorStop(0, '#4c0a1a');
+    grad.addColorStop(0.22, '#911d36');
+    grad.addColorStop(0.42, '#ba344e');
+    grad.addColorStop(0.58, '#6e1125');
+    grad.addColorStop(0.78, '#a62842');
+    grad.addColorStop(1, '#3b0613');
 
     ctx.fillStyle = grad;
     ctx.beginPath();
     ctx.arc(cx, cy, r, 0, Math.PI * 2);
     ctx.fill();
 
-    // Soft radial highlight in upper-left for hammered gold-coin depth
-    const radHighlight = ctx.createRadialGradient(cx * 0.72, cy * 0.65, r * 0.05, cx, cy, r);
-    radHighlight.addColorStop(0, 'rgba(255, 250, 224, 0.45)');
-    radHighlight.addColorStop(0.6, 'rgba(255, 240, 185, 0.05)');
-    radHighlight.addColorStop(1, 'rgba(115, 72, 14, 0.25)');
+    // Soft radial specular highlight in upper-left for sculpted metallic-foil depth
+    const radHighlight = ctx.createRadialGradient(cx * 0.68, cy * 0.62, r * 0.04, cx, cy, r);
+    radHighlight.addColorStop(0, 'rgba(255, 212, 222, 0.36)');
+    radHighlight.addColorStop(0.45, 'rgba(214, 78, 108, 0.12)');
+    radHighlight.addColorStop(1, 'rgba(34, 4, 12, 0.44)');
     ctx.fillStyle = radHighlight;
     ctx.beginPath();
     ctx.arc(cx, cy, r, 0, Math.PI * 2);
     ctx.fill();
 
-    // Fine diagonal brushed foil micro-lines
+    // Fine diagonal brushed-metal micro-lines & subtle satin glint
     ctx.save();
     ctx.beginPath();
     ctx.arc(cx, cy, r, 0, Math.PI * 2);
     ctx.clip();
-    ctx.strokeStyle = 'rgba(255, 248, 220, 0.14)';
+    ctx.strokeStyle = 'rgba(255, 224, 232, 0.11)';
     ctx.lineWidth = 1;
-    for (let i = -h; i < w + h; i += 6) {
+    for (let i = -h; i < w + h; i += 5) {
       ctx.beginPath();
       ctx.moveTo(i, 0);
       ctx.lineTo(i - h * 0.55, h);
       ctx.stroke();
     }
+    const sheenBand = ctx.createLinearGradient(w * 0.15, 0, w * 0.85, h);
+    sheenBand.addColorStop(0, 'rgba(255, 230, 236, 0)');
+    sheenBand.addColorStop(0.46, 'rgba(255, 230, 236, 0.16)');
+    sheenBand.addColorStop(0.54, 'rgba(255, 230, 236, 0)');
+    ctx.fillStyle = sheenBand;
+    ctx.fillRect(0, 0, w, h);
     ctx.restore();
 
-    // Delicate embossed ornamental rings
-    ctx.strokeStyle = 'rgba(105, 66, 12, 0.34)';
-    ctx.lineWidth = 1.4;
+    // Delicate gold-stamped ornamental rings on metallic burgundy
+    ctx.strokeStyle = 'rgba(232, 198, 120, 0.65)';
+    ctx.lineWidth = 1.25;
     ctx.beginPath();
-    ctx.arc(cx, cy, r - 12, 0, Math.PI * 2);
+    ctx.arc(cx, cy, r - 9, 0, Math.PI * 2);
     ctx.stroke();
 
-    ctx.setLineDash([4, 5]);
-    ctx.strokeStyle = 'rgba(105, 66, 12, 0.28)';
+    ctx.setLineDash([3.5, 4.5]);
+    ctx.strokeStyle = 'rgba(232, 198, 120, 0.48)';
     ctx.lineWidth = 1;
     ctx.beginPath();
-    ctx.arc(cx, cy, r - 20, 0, Math.PI * 2);
+    ctx.arc(cx, cy, r - 15, 0, Math.PI * 2);
     ctx.stroke();
     ctx.setLineDash([]);
 
-    // Small engraved 8-petal lotus emblem above foil copy
+    // Small gold-embossed 8-petal lotus emblem above foil copy
+    const lotusScale = Math.min(1, w / 260);
     ctx.save();
     ctx.translate(cx, cy - r * 0.34);
-    ctx.strokeStyle = 'rgba(102, 60, 10, 0.55)';
+    ctx.scale(lotusScale, lotusScale);
+    ctx.strokeStyle = 'rgba(244, 217, 152, 0.78)';
     ctx.lineWidth = 1.4;
     for (let a = 0; a < 8; a++) {
       ctx.save();
       ctx.rotate((a * Math.PI) / 4);
       ctx.beginPath();
-      ctx.moveTo(0, -4);
-      ctx.quadraticCurveTo(5, -13, 0, -21);
-      ctx.quadraticCurveTo(-5, -13, 0, -4);
+      ctx.moveTo(0, -3.5);
+      ctx.quadraticCurveTo(4.5, -11, 0, -18);
+      ctx.quadraticCurveTo(-4.5, -11, 0, -3.5);
       ctx.stroke();
       ctx.restore();
     }
     ctx.beginPath();
-    ctx.arc(0, 0, 3.2, 0, Math.PI * 2);
-    ctx.fillStyle = 'rgba(102, 60, 10, 0.55)';
+    ctx.arc(0, 0, 2.8, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(244, 217, 152, 0.85)';
     ctx.fill();
     ctx.restore();
 
-    // Engraved prompt text on the gold seal
-    ctx.fillStyle = '#5f3708';
+    // Gold-stamped prompt text on the metallic burgundy seal
+    ctx.save();
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    const titleSize = Math.max(15, Math.round(w * 0.068));
-    ctx.font = `700 ${titleSize}px Archivo, sans-serif`;
-    ctx.fillText('SCRATCH HERE', cx, cy + r * 0.04);
+    ctx.shadowColor = 'rgba(36, 4, 12, 0.65)';
+    ctx.shadowBlur = 4;
+    ctx.shadowOffsetY = 1;
 
-    const subSize = Math.max(13, Math.round(w * 0.056));
-    ctx.fillStyle = 'rgba(95, 55, 8, 0.8)';
-    ctx.font = `italic 500 ${subSize}px Playfair, Georgia, serif`;
-    ctx.fillText('rub gently to unseal', cx, cy + r * 0.24);
+    const titleSize = Math.max(12, Math.round(w * 0.064));
+    ctx.fillStyle = '#f6dfa0';
+    ctx.font = `600 ${titleSize}px Cinzel, Georgia, serif`;
+    ctx.fillText('SCRATCH HERE', cx, cy + r * 0.05);
+
+    const subSize = Math.max(12, Math.round(w * 0.062));
+    ctx.fillStyle = 'rgba(244, 220, 162, 0.9)';
+    ctx.font = `italic 500 ${subSize}px "Cormorant Garamond", Georgia, serif`;
+    ctx.fillText('rub gently to unseal', cx, cy + r * 0.25);
+    ctx.restore();
 
     ctx.restore();
   }, []);
@@ -498,7 +513,7 @@ export const ScratchRevealInvite: React.FC = () => {
       if (!ctx) return;
 
       const dpr = canvas.width / rect.width;
-      const baseRadius = Math.max(20, rect.width * (pointerType === 'touch' ? 0.085 : 0.072));
+      const baseRadius = Math.max(15, rect.width * (pointerType === 'touch' ? 0.09 : 0.078));
       const brushRadius = isPressed ? baseRadius * 1.18 : baseRadius;
 
       ctx.save();
@@ -556,7 +571,7 @@ export const ScratchRevealInvite: React.FC = () => {
     <section
       id="scratch-invite"
       aria-labelledby="scratch-invite-heading"
-      className="relative z-10 bg-[#faf3e4] text-[#5c1a1b] py-16 sm:py-24 px-5 sm:px-8 overflow-hidden"
+      className="relative z-10 bg-[#faf3e4] text-[#6b1d2f] py-16 sm:py-24 px-5 sm:px-8 overflow-hidden"
     >
       {/* Full-viewport celebratory rose-petal particle overlay */}
       <canvas
@@ -568,44 +583,44 @@ export const ScratchRevealInvite: React.FC = () => {
       {/* Subtle warm radial glow behind the medallion */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[36rem] h-[36rem] rounded-full opacity-55"
+        className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[26rem] h-[26rem] rounded-full opacity-55"
         style={{
           background:
-            'radial-gradient(circle, rgba(255,212,110,0.34) 0%, rgba(239,74,35,0.08) 48%, rgba(250,243,228,0) 74%)',
+            'radial-gradient(circle, rgba(138,24,48,0.16) 0%, rgba(232,198,120,0.22) 44%, rgba(250,243,228,0) 74%)',
         }}
       />
 
       <div className="relative z-10 max-w-3xl mx-auto flex flex-col items-center text-center">
         {/* Editorial Eyebrow & Title */}
-        <p className="font-playfair text-[0.92rem] sm:text-[1.05rem] tracking-[0.16em] uppercase text-[#8f661d]">
+        <p className="font-archivo text-[0.76rem] sm:text-[0.86rem] tracking-[0.26em] uppercase text-[#9a6b20]">
           A Royal Keepsake · Udaipur
         </p>
         <h2
           id="scratch-invite-heading"
-          className="mt-2 font-archivo text-[2.9rem] sm:text-[4.2rem] lg:text-[4.8rem] font-extrabold uppercase tracking-[-0.025em] leading-[0.88] text-[#5c1a1b]"
+          className="mt-2.5 font-archivo text-[clamp(2.35rem,4.8vw,3.9rem)] font-semibold uppercase tracking-[0.06em] leading-[1.04] text-[#6b1d2f]"
           style={{ textWrap: 'balance' }}
         >
           Unseal Your{' '}
-          <span className="font-playfair font-light italic lowercase text-[2.7rem] sm:text-[3.9rem] lg:text-[4.5rem] text-[#ef4a23]">
+          <span className="font-playfair font-medium italic lowercase text-[clamp(2.75rem,5.4vw,4.5rem)] tracking-[0.01em] text-[#b84a27]">
             invitation
           </span>
         </h2>
-        <p className="mt-3 sm:mt-4 font-playfair text-[1.08rem] sm:text-[1.24rem] text-[#5c1a1b]/80 max-w-md leading-relaxed">
+        <p className="mt-3 sm:mt-4 font-playfair text-[1.2rem] sm:text-[1.38rem] text-[#6b1d2f]/85 max-w-md leading-relaxed">
           {isRevealed
             ? 'Rose petals are in the air—we cannot wait to celebrate with you by Lake Pichola.'
-            : 'Sweep your cursor or rub gently with your finger over the gold seal to reveal your message.'}
+            : 'Sweep your cursor or rub gently with your finger over the burgundy seal to reveal your message.'}
         </p>
 
-        {/* Ornate Circular Gold-Leaf Scratch Medallion */}
+        {/* Ornate Circular Metallic Burgundy Scratch Medallion */}
         <div
           ref={medallionRef}
-          className="relative mt-9 sm:mt-11 flex items-center justify-center w-[min(20.5rem,82vw)] h-[min(20.5rem,82vw)] sm:w-[23rem] sm:h-[23rem]"
+          className="relative mt-8 sm:mt-9 flex items-center justify-center w-[min(14.5rem,64vw)] h-[min(14.5rem,64vw)] sm:w-[16rem] sm:h-[16rem]"
         >
           {/* Decorative Outer Royal Lotus Halo SVG Ring */}
           <svg
             aria-hidden="true"
             viewBox="0 0 400 400"
-            className="pointer-events-none absolute -inset-5 sm:-inset-6 w-[calc(100%+2.5rem)] h-[calc(100%+2.5rem)] sm:w-[calc(100%+3rem)] sm:h-[calc(100%+3rem)] text-[#c59436]"
+            className="pointer-events-none absolute -inset-3.5 sm:-inset-4 w-[calc(100%+1.75rem)] h-[calc(100%+1.75rem)] sm:w-[calc(100%+2rem)] sm:h-[calc(100%+2rem)] text-[#c59436]"
             fill="none"
           >
             <circle cx="200" cy="200" r="192" stroke="currentColor" strokeWidth="1" strokeOpacity="0.45" />
@@ -622,19 +637,19 @@ export const ScratchRevealInvite: React.FC = () => {
               <g key={deg} transform={`rotate(${deg} 200 200)`}>
                 <path
                   d="M200 4C204 11 204 16 200 21C196 16 196 11 200 4Z"
-                  fill={deg % 60 === 0 ? '#ef4a23' : '#c59436'}
-                  fillOpacity={deg % 60 === 0 ? '0.68' : '0.45'}
+                  fill={deg % 60 === 0 ? '#8c1931' : '#c59436'}
+                  fillOpacity={deg % 60 === 0 ? '0.78' : '0.45'}
                 />
               </g>
             ))}
           </svg>
 
           {/* Circular Medallion Shell */}
-          <div className="relative w-full h-full rounded-full shadow-[0_26px_70px_-24px_rgba(92,26,27,0.38)] border-[3px] border-[#c59436]/75 bg-[#fcf7ea] overflow-hidden select-none">
+          <div className="relative w-full h-full rounded-full shadow-[0_20px_54px_-18px_rgba(74,14,28,0.45)] border-[2.5px] border-[#c59436]/80 bg-[#fcf7ea] overflow-hidden select-none">
             {/* Revealed Keepsake Content Underneath */}
             <div
               ref={revealCardRef}
-              className="absolute inset-0 flex flex-col items-center justify-center p-7 sm:p-9 text-center"
+              className="absolute inset-0 flex flex-col items-center justify-center p-4 sm:p-5 text-center"
               style={{
                 background:
                   'radial-gradient(circle at 50% 42%, #fffdf7 0%, #faf0d7 68%, #f2e1bc 100%)',
@@ -643,18 +658,18 @@ export const ScratchRevealInvite: React.FC = () => {
               {/* Inner delicate filigree border */}
               <div
                 aria-hidden="true"
-                className="pointer-events-none absolute inset-3 sm:inset-4 rounded-full border border-[#c59436]/45"
+                className="pointer-events-none absolute inset-2 sm:inset-2.5 rounded-full border border-[#c59436]/45"
               />
               <div
                 aria-hidden="true"
-                className="pointer-events-none absolute inset-[1.15rem] sm:inset-[1.35rem] rounded-full border border-dashed border-[#ef4a23]/25"
+                className="pointer-events-none absolute inset-[0.8rem] sm:inset-[0.95rem] rounded-full border border-dashed border-[#8c1931]/28"
               />
 
               {/* Painted Rose / Lotus Flourish */}
               <svg
                 aria-hidden="true"
                 viewBox="0 0 64 40"
-                className="w-11 h-7 sm:w-12 sm:h-8 text-[#ef4a23] mb-2"
+                className="w-8 h-5 sm:w-9 sm:h-6 text-[#8c1931] mb-1"
                 fill="none"
               >
                 <path
@@ -686,28 +701,28 @@ export const ScratchRevealInvite: React.FC = () => {
                 />
               </svg>
 
-              <span className="font-archivo text-[0.68rem] sm:text-[0.76rem] uppercase tracking-[0.22em] text-[#8f661d]">
-                Ram &amp; Sita
+              <span className="font-archivo text-[0.54rem] sm:text-[0.6rem] uppercase tracking-[0.2em] text-[#9a6b20]">
+                Vaibhav &amp; Trisha
               </span>
 
-              <h3 className="mt-1.5 font-archivo text-[2.25rem] sm:text-[2.75rem] font-extrabold uppercase tracking-[-0.025em] leading-[0.9] text-[#5c1a1b]">
+              <h3 className="mt-1 font-archivo text-[1.2rem] sm:text-[1.42rem] font-semibold uppercase tracking-[0.06em] leading-[1.02] text-[#6b1d2f]">
                 You Are
-                <span className="block font-playfair font-normal italic lowercase text-[2.5rem] sm:text-[3.1rem] text-[#ef4a23] leading-[0.95] mt-0.5">
+                <span className="block font-playfair font-medium italic lowercase text-[1.68rem] sm:text-[2rem] text-[#8c1931] leading-[0.94] mt-0.5">
                   Invited
                 </span>
               </h3>
 
-              <div className="mt-3 pt-2.5 border-t border-[#c59436]/40 max-w-[14rem]">
-                <p className="font-playfair italic text-[0.9rem] sm:text-[1rem] text-[#5c1a1b]/85 leading-snug">
+              <div className="mt-2 pt-1.5 border-t border-[#c59436]/40 max-w-[10.5rem]">
+                <p className="font-playfair italic text-[0.84rem] sm:text-[0.92rem] text-[#6b1d2f]/85 leading-snug">
                   December 15, 2026
                 </p>
-                <p className="font-archivo text-[0.62rem] sm:text-[0.68rem] uppercase tracking-[0.14em] text-[#8f661d] mt-1">
+                <p className="font-archivo text-[0.48rem] sm:text-[0.54rem] uppercase tracking-[0.15em] text-[#9a6b20] mt-0.5">
                   The Leela Palace · Udaipur
                 </p>
               </div>
             </div>
 
-            {/* Interactive Metallic Gold-Leaf Scratch Canvas */}
+            {/* Interactive Metallic Red-Burgundy Scratch Canvas */}
             <canvas
               ref={scratchCanvasRef}
               onPointerDown={handlePointerDown}
@@ -715,7 +730,7 @@ export const ScratchRevealInvite: React.FC = () => {
               onPointerUp={handlePointerEnd}
               onPointerCancel={handlePointerEnd}
               onPointerLeave={handlePointerEnd}
-              aria-label="Scratch off gold seal to reveal your wedding invitation"
+              aria-label="Scratch off metallic burgundy seal to reveal your wedding invitation"
               className={`absolute inset-0 w-full h-full rounded-full touch-none ${
                 isRevealed ? 'pointer-events-none' : 'cursor-pointer'
               }`}
@@ -728,14 +743,14 @@ export const ScratchRevealInvite: React.FC = () => {
           {!isRevealed ? (
             <>
               {hasInteracted && scratchProgress > 0 && (
-                <span className="font-archivo text-xs uppercase tracking-[0.16em] text-[#8f661d] tabular-nums">
+                <span className="font-archivo text-xs uppercase tracking-[0.18em] text-[#9a6b20] tabular-nums">
                   Unsealing · {Math.min(99, Math.round((scratchProgress / 42) * 100))}%
                 </span>
               )}
               <button
                 type="button"
                 onClick={triggerReveal}
-                className="min-h-[44px] px-5 py-2 rounded-full border border-[#c59436]/55 bg-[#fcf7ea] text-[#5c1a1b] font-archivo text-xs uppercase tracking-[0.14em] hover:bg-[#ef4a23] hover:border-[#ef4a23] hover:text-[#faf3e4] transition-colors cursor-pointer inline-flex items-center gap-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#ef4a23]"
+                className="min-h-[44px] px-6 py-2 rounded-full border border-[#c59436]/65 bg-[#fcf7ea] text-[#6b1d2f] font-archivo text-xs uppercase tracking-[0.16em] hover:bg-[#6b1d2f] hover:border-[#6b1d2f] hover:text-[#faf3e4] transition-colors cursor-pointer inline-flex items-center gap-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#b84a27]"
               >
                 <Sparkles className="w-3.5 h-3.5" />
                 Tap to Unseal
@@ -746,7 +761,7 @@ export const ScratchRevealInvite: React.FC = () => {
               <button
                 type="button"
                 onClick={launchRosePetalsBurst}
-                className="min-h-[44px] px-5 py-2 rounded-full bg-[#ef4a23] text-[#faf3e4] font-archivo text-xs uppercase tracking-[0.14em] hover:bg-[#471418] transition-colors cursor-pointer inline-flex items-center gap-2 shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#ef4a23]"
+                className="min-h-[44px] px-6 py-2 rounded-full bg-[#b84a27] text-[#faf3e4] font-archivo text-xs uppercase tracking-[0.16em] hover:bg-[#4a1422] transition-colors cursor-pointer inline-flex items-center gap-2 shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#b84a27]"
               >
                 <Sparkles className="w-3.5 h-3.5" />
                 Toss More Rose Petals
@@ -754,7 +769,7 @@ export const ScratchRevealInvite: React.FC = () => {
               <button
                 type="button"
                 onClick={resetScratch}
-                className="min-h-[44px] px-4 py-2 rounded-full border border-[#5c1a1b]/25 text-[#5c1a1b]/80 font-archivo text-xs uppercase tracking-[0.14em] hover:text-[#5c1a1b] hover:border-[#5c1a1b]/50 transition-colors cursor-pointer inline-flex items-center gap-1.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#ef4a23]"
+                className="min-h-[44px] px-4 py-2 rounded-full border border-[#6b1d2f]/30 text-[#6b1d2f]/80 font-archivo text-xs uppercase tracking-[0.16em] hover:text-[#6b1d2f] hover:border-[#6b1d2f]/55 transition-colors cursor-pointer inline-flex items-center gap-1.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#b84a27]"
               >
                 <RotateCcw className="w-3.5 h-3.5" />
                 Scratch Again

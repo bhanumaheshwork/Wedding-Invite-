@@ -2,21 +2,21 @@
 
 :root {
   --page: #faf3e4;
-  --ink: #5c1a1b;
-  --tomato: #ef4a23;
-  --butter: #ffd46e;
+  --ink: #6b1d2f;
+  --tomato: #b84a27;
+  --butter: #e8c678;
   --sky: #8fc6e8;
   --pink: #f6a9c2;
   --sage: #b9c48a;
   --white: #ffffff;
-  --night: #471418;
+  --night: #4a1422;
 }
 
 html {
   font-size: calc(100vw / 90);
   background-color: var(--page);
   color: var(--ink);
-  font-family: 'Archivo', sans-serif;
+  font-family: 'Cormorant Garamond', Georgia, serif;
   overflow-x: clip;
 }
 
@@ -42,26 +42,28 @@ body {
 }
 
 html[data-theme="dark"] {
-  --page: #471418;
+  --page: #4a1422;
   --ink: #faf3e4;
 }
 
 .font-archivo {
-  font-family: 'Archivo', sans-serif;
-  font-variation-settings: "wght" 700, "wdth" 72;
+  font-family: 'Cinzel', Georgia, serif;
+  font-weight: 600;
 }
 
 .font-playfair {
-  font-family: 'Playfair', serif;
-  font-variation-settings: "wght" 300, "wdth" 87.5, "opsz" 120;
+  font-family: 'Cormorant Garamond', Georgia, serif;
 }
 
 .font-yellowtail {
-  font-family: 'Yellowtail', cursive;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-style: italic;
+  font-weight: 500;
 }
 
 .font-titan {
-  font-family: 'Titan One', cursive;
+  font-family: 'Cinzel', Georgia, serif;
+  font-weight: 700;
 }
 
 /* Crop box helper */

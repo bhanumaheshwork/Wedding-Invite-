@@ -29,18 +29,18 @@ export interface GalleryPhoto {
 export const weddingConfig = {
   couple: {
     groom: {
-      name: "Ram Raghavan",
-      parents: "Son of Smt. Kamala & Shri Ranganathan Raghavan",
+      name: "Vaibhav",
+      parents: "With love & blessings from his family",
       bio: "An architect with a passion for classical heritage and serene landscapes.",
       image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=800&q=80"
     },
     bride: {
-      name: "Sita Sharma",
-      parents: "Daughter of Smt. Ananya & Shri Rajesh Sharma",
+      name: "Trisha",
+      parents: "With love & blessings from her family",
       bio: "A classical Bharatanatyam dancer and curator of fine arts.",
       image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80"
     },
-    hashtag: "#RamWedsSita2026",
+    hashtag: "#VaibhavWedsTrisha2026",
     weddingDate: "2026-12-15T10:00:00",
     dateDisplay: "December 15, 2026",
     venueName: "The Leela Palace & Royal Gardens",
@@ -63,7 +63,7 @@ export const weddingConfig = {
     {
       year: "Spring 2025",
       title: "The Royal Proposal",
-      description: "Under the starlit sky at a palace overlooking Lake Pichola in Udaipur, Ram went down on one knee with a vintage heirloom ring.",
+      description: "Under the starlit sky at a palace overlooking Lake Pichola in Udaipur, Vaibhav went down on one knee with a vintage heirloom ring.",
       image: "https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&w=800&q=80"
     },
     {
@@ -123,7 +123,7 @@ export const weddingConfig = {
       venue: "Lotus Pavilion & Mandap Lawn",
       address: "The Leela Palace, Udaipur",
       dressCode: "Traditional Indian Traditional / Silk Sarees & Sherwanis",
-      description: "The traditional Hindu wedding ceremony uniting Ram and Sita in holy matrimony with Vedic mantras, sacred fire rituals, and timeless blessings.",
+      description: "The traditional Hindu wedding ceremony uniting Vaibhav and Trisha in holy matrimony with Vedic mantras, sacred fire rituals, and timeless blessings.",
       image: "https://images.unsplash.com/photo-1545232979-fbf6e0c7a40f?auto=format&fit=crop&w=800&q=80",
       color: "from-red-900/20 to-amber-900/20"
     },

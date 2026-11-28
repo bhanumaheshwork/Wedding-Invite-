@@ -24,7 +24,7 @@ const STORY_CHAPTERS: StoryChapter[] = [
     number: '01',
     era: 'School Days',
     title: 'The Schoolyard Proposal',
-    body: 'It all began between ringing bells, borrowed notebooks, and long walks home after class. One golden afternoon, Ram gathered every bit of courage he had and confessed his feelings to Sita—sparking a promise that turned a schoolyard crush into something timeless.',
+    body: 'It all began between ringing bells, borrowed notebooks, and long walks home after class. One golden afternoon, Vaibhav gathered every bit of courage he had and confessed his feelings to Trisha—sparking a promise that turned a schoolyard crush into something timeless.',
     motif: 'lotus',
     footnote: 'Where a borrowed notebook became a lifelong promise',
   },
@@ -51,7 +51,7 @@ const STORY_CHAPTERS: StoryChapter[] = [
     number: '04',
     era: 'Making It Official',
     title: 'Two Families, One Blessing',
-    body: 'When the moment was right, both families came together over warm chai, laughter, and stories from the past. Seeing the love and patience Ram and Sita had built over the years, everyone wholeheartedly agreed it was time to make it official.',
+    body: 'When the moment was right, both families came together over warm chai, laughter, and stories from the past. Seeing the love and patience Vaibhav and Trisha had built over the years, everyone wholeheartedly agreed it was time to make it official.',
     motif: 'diya',
     footnote: 'Warm chai, laughter, and blessings from both homes',
   },
@@ -60,7 +60,7 @@ const STORY_CHAPTERS: StoryChapter[] = [
     number: '05',
     era: 'Forever Begins · Dec 15, 2026',
     title: 'And We Said Yes',
-    body: 'Surrounded by the people who watched them grow from schoolmates into soulmates, Ram and Sita said the easiest "Yes" of their lives—ready to begin their forever together in Udaipur.',
+    body: 'Surrounded by the people who watched them grow from schoolmates into soulmates, Vaibhav and Trisha said the easiest "Yes" of their lives—ready to begin their forever together in Udaipur.',
     motif: 'mandala',
     footnote: 'The Leela Palace · Udaipur, Rajasthan',
   },
@@ -199,7 +199,7 @@ const IndianMotif: React.FC<{ type: MotifType; color: string; className?: string
 
 const StoryCardBody: React.FC<{ chapter: StoryChapter; total: number }> = React.memo(({ chapter, total }) => (
   <div
-    className="relative w-full h-full min-h-[410px] sm:min-h-[430px] lg:min-h-0 bg-[#fcf7ea] text-[#5c1a1b] rounded-[1.75rem] lg:rounded-[2.1rem] border border-[#c59436]/55 px-8 py-9 sm:px-12 sm:py-11 lg:px-[clamp(3.6rem,5.5vw,5.4rem)] lg:pt-[clamp(3.6rem,7.2vh,5.2rem)] lg:pb-[clamp(4.2rem,8.2vh,5.8rem)] shadow-[0_12px_28px_-8px_rgba(92,26,27,0.24)] lg:shadow-[0_28px_70px_-20px_rgba(92,26,27,0.32)] flex flex-col justify-between overflow-hidden"
+    className="relative w-full h-full min-h-[410px] sm:min-h-[430px] lg:min-h-0 bg-[#fcf7ea] text-[#6b1d2f] rounded-[1.75rem] lg:rounded-[2.1rem] border border-[#c59436]/55 px-8 py-9 sm:px-12 sm:py-11 lg:px-[clamp(3.6rem,5.5vw,5.4rem)] lg:pt-[clamp(3.6rem,7.2vh,5.2rem)] lg:pb-[clamp(4.2rem,8.2vh,5.8rem)] shadow-[0_12px_28px_-8px_rgba(74,20,34,0.22)] lg:shadow-[0_28px_70px_-20px_rgba(74,20,34,0.3)] flex flex-col justify-between overflow-hidden"
   >
     {/* Unified Fine-Art Rajasthani Stationery Background */}
     <img
@@ -211,26 +211,26 @@ const StoryCardBody: React.FC<{ chapter: StoryChapter; total: number }> = React.
       className="pointer-events-none select-none absolute inset-0 w-full h-full object-cover object-center lg:scale-[1.05]"
     />
 
-    {/* Subtle luminous center ivory wash so Royal Maroon text stays crisp while painted borders & palace shine */}
+    {/* Subtle luminous center ivory wash so Imperial Garnet text stays crisp while painted borders & palace shine */}
     <div
       aria-hidden="true"
       className="pointer-events-none absolute inset-0"
       style={{
         background:
-          'radial-gradient(ellipse 72% 62% at 50% 46%, rgba(252,247,234,0.74) 0%, rgba(252,247,234,0.28) 68%, rgba(252,247,234,0.03) 100%)',
+          'radial-gradient(ellipse 72% 62% at 50% 46%, rgba(252,247,234,0.78) 0%, rgba(252,247,234,0.3) 68%, rgba(252,247,234,0.03) 100%)',
       }}
     />
 
     {/* Top Editorial Metadata & Unique Indian Motif */}
     <div className="relative z-10 flex items-center justify-between gap-4 px-1">
-      <div className="flex items-center gap-2 font-archivo text-[0.76rem] sm:text-[0.84rem] lg:text-[clamp(0.76rem,1.45vh,0.95rem)] tracking-[0.14em] uppercase tabular-nums text-[#8f661d]">
+      <div className="flex items-center gap-2 font-archivo text-[0.7rem] sm:text-[0.78rem] lg:text-[clamp(0.72rem,1.35vh,0.88rem)] tracking-[0.18em] uppercase tabular-nums text-[#9a6b20]">
         <span>Chapter {chapter.number}</span>
         <span aria-hidden="true">·</span>
         <span>{chapter.era}</span>
       </div>
       <IndianMotif
         type={chapter.motif}
-        color="#ef4a23"
+        color="#b84a27"
         className="w-9 h-9 sm:w-11 sm:h-11 lg:w-[clamp(2.5rem,5vh,3.4rem)] lg:h-[clamp(2.5rem,5vh,3.4rem)] shrink-0"
       />
     </div>
@@ -238,22 +238,22 @@ const StoryCardBody: React.FC<{ chapter: StoryChapter; total: number }> = React.
     {/* Main Narrative Typography */}
     <div className="relative z-10 my-5 sm:my-7 lg:my-[clamp(1rem,2.5vh,2.2rem)] px-1 space-y-2.5 sm:space-y-3.5 lg:space-y-[clamp(0.85rem,1.8vh,1.4rem)]">
       <h3
-        className="font-archivo text-[2rem] sm:text-[2.7rem] lg:text-[clamp(2.35rem,5.1vh,3.65rem)] font-extrabold uppercase tracking-[-0.025em] leading-[0.94] text-[#5c1a1b]"
+        className="font-archivo text-[1.65rem] sm:text-[2.15rem] lg:text-[clamp(1.9rem,4.1vh,2.9rem)] font-semibold uppercase tracking-[0.04em] leading-[1.08] text-[#6b1d2f]"
         style={{ textWrap: 'balance' }}
       >
         {chapter.title}
       </h3>
-      <p className="font-playfair text-[1.06rem] sm:text-[1.22rem] lg:text-[clamp(1.08rem,2.3vh,1.48rem)] leading-[1.48] max-w-[44ch] text-[#5c1a1b]/90">
+      <p className="font-playfair text-[1.16rem] sm:text-[1.32rem] lg:text-[clamp(1.16rem,2.45vh,1.58rem)] leading-[1.52] max-w-[44ch] text-[#532430]">
         {chapter.body}
       </p>
     </div>
 
     {/* Bottom Editorial Hairline Footer */}
     <div className="relative z-10 pt-3 sm:pt-3.5 lg:pt-[clamp(0.7rem,1.5vh,1.1rem)] px-1 border-t border-[#c59436]/45 flex items-center justify-between gap-4">
-      <p className="font-playfair italic text-[0.92rem] sm:text-[1rem] lg:text-[clamp(0.9rem,1.7vh,1.1rem)] leading-snug text-[#5c1a1b]/85">
+      <p className="font-playfair italic text-[1rem] sm:text-[1.1rem] lg:text-[clamp(0.98rem,1.85vh,1.2rem)] leading-snug text-[#6b1d2f]/85">
         {chapter.footnote}
       </p>
-      <span className="font-archivo text-[0.78rem] lg:text-[clamp(0.78rem,1.4vh,0.92rem)] tracking-[0.12em] uppercase tabular-nums whitespace-nowrap shrink-0 text-[#8f661d]">
+      <span className="font-archivo text-[0.72rem] lg:text-[clamp(0.72rem,1.3vh,0.86rem)] tracking-[0.16em] uppercase tabular-nums whitespace-nowrap shrink-0 text-[#9a6b20]">
         {chapter.number} / 0{total}
       </span>
     </div>
@@ -485,7 +485,7 @@ export const LoveStoryStack: React.FC = () => {
       id="story"
       ref={sectionRef}
       aria-labelledby="love-story-heading"
-      className="relative z-20 bg-[#faf3e4] text-[#5c1a1b] lg:isolate lg:overflow-x-clip"
+      className="relative z-20 bg-[#faf3e4] text-[#6b1d2f] lg:isolate lg:overflow-x-clip"
     >
       {/* DESKTOP (>= 1024px): Pinned 100vh 3D Peeling Stack */}
       <div
@@ -495,24 +495,24 @@ export const LoveStoryStack: React.FC = () => {
         {/* Left Editorial Column */}
         <div className="col-span-5 flex flex-col justify-center gap-[clamp(0.9rem,2.2vh,1.75rem)] z-10 min-h-0">
           <div className="space-y-[clamp(0.45rem,1.2vh,0.95rem)]">
-            <p className="font-playfair text-[clamp(0.95rem,2.05vh,1.45rem)] font-medium leading-[1.2] tracking-[-0.015em] text-[#5c1a1b]/85 max-w-[26rem]">
+            <p className="font-playfair italic text-[clamp(1.05rem,2.2vh,1.55rem)] font-medium leading-[1.28] text-[#6b1d2f]/85 max-w-[26rem]">
               From school hallways to Udaipur. Five chapters that carried a quiet crush all the way to forever.
             </p>
             <h2
               id="love-story-heading"
-              className="font-archivo text-[clamp(2.6rem,7.2vh,5.2rem)] font-bold uppercase tracking-[-0.025em] leading-[0.84] text-[#5c1a1b]"
+              className="font-archivo text-[clamp(2.2rem,5.6vh,4rem)] font-semibold uppercase tracking-[0.06em] leading-[1.02] text-[#6b1d2f]"
               style={{ textWrap: 'balance' }}
             >
               Our Love <br />
-              <span className="font-playfair font-light italic lowercase text-[clamp(2.3rem,6.4vh,4.6rem)] tracking-[-0.03em] text-[#ef4a23]">
+              <span className="font-playfair font-medium italic lowercase text-[clamp(2.6rem,6.5vh,4.8rem)] tracking-[0.01em] text-[#b84a27]">
                 story
               </span>
             </h2>
           </div>
 
           {/* Live Chapter Progress & Interactive Step Switcher */}
-          <div className="pt-[clamp(0.55rem,1.4vh,1rem)] border-t border-[#5c1a1b]/20 max-w-[26rem] space-y-[clamp(0.35rem,0.9vh,0.7rem)]">
-            <div className="flex items-center justify-between text-[clamp(0.66rem,1.2vh,0.78rem)] font-archivo uppercase tracking-[0.14em] text-[#5c1a1b]/70 tabular-nums">
+          <div className="pt-[clamp(0.55rem,1.4vh,1rem)] border-t border-[#c59436]/40 max-w-[26rem] space-y-[clamp(0.35rem,0.9vh,0.7rem)]">
+            <div className="flex items-center justify-between text-[clamp(0.64rem,1.15vh,0.76rem)] font-archivo uppercase tracking-[0.18em] text-[#9a6b20] tabular-nums">
               <span>Now Reading</span>
               <span>
                 {STORY_CHAPTERS[activeIndex].number} / 0{STORY_CHAPTERS.length}
@@ -528,27 +528,27 @@ export const LoveStoryStack: React.FC = () => {
                     type="button"
                     onClick={() => handleJumpToChapter(idx)}
                     aria-current={isActive ? 'step' : undefined}
-                    className={`group flex items-center justify-between gap-3 py-[clamp(0.3rem,0.8vh,0.52rem)] px-3 rounded-lg text-left transition-colors duration-200 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#ef4a23] ${
+                    className={`group flex items-center justify-between gap-3 py-[clamp(0.3rem,0.8vh,0.52rem)] px-3 rounded-lg text-left transition-colors duration-200 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#b84a27] ${
                       isActive
-                        ? 'bg-[#471418] text-[#faf3e4]'
-                        : 'text-[#5c1a1b]/75 hover:text-[#5c1a1b] hover:bg-[#5c1a1b]/6'
+                        ? 'bg-[#4a1422] text-[#faf3e4]'
+                        : 'text-[#6b1d2f]/80 hover:text-[#6b1d2f] hover:bg-[#6b1d2f]/6'
                     }`}
                   >
                     <span className="flex items-center gap-3 min-w-0">
                       <span
-                        className={`font-archivo text-[clamp(0.68rem,1.2vh,0.78rem)] tabular-nums tracking-wider shrink-0 ${
-                          isActive ? 'text-[#ffd46e]' : 'text-[#ef4a23]'
+                        className={`font-archivo text-[clamp(0.66rem,1.15vh,0.76rem)] tabular-nums tracking-wider shrink-0 ${
+                          isActive ? 'text-[#e8c678]' : 'text-[#b84a27]'
                         }`}
                       >
                         {chapter.number}
                       </span>
-                      <span className="font-playfair text-[clamp(0.84rem,1.7vh,1.04rem)] leading-tight truncate">
+                      <span className="font-playfair text-[clamp(0.95rem,1.9vh,1.15rem)] leading-tight truncate">
                         {chapter.title}
                       </span>
                     </span>
                     <span
-                      className={`font-archivo text-[clamp(0.58rem,1vh,0.68rem)] uppercase tracking-wider whitespace-nowrap shrink-0 ${
-                        isActive ? 'text-[#faf3e4]/80' : 'text-[#5c1a1b]/55'
+                      className={`font-archivo text-[clamp(0.56rem,0.95vh,0.66rem)] uppercase tracking-[0.12em] whitespace-nowrap shrink-0 ${
+                        isActive ? 'text-[#faf3e4]/80' : 'text-[#6b1d2f]/55'
                       }`}
                     >
                       {chapter.era.split('·')[0].trim()}
@@ -588,15 +588,15 @@ export const LoveStoryStack: React.FC = () => {
         <div className="max-w-xl mx-auto">
           {/* Header */}
           <div className="text-center space-y-4 mb-10">
-            <p className="font-playfair text-[1.25rem] sm:text-[1.45rem] font-medium leading-[1.25] text-[#5c1a1b]/85 max-w-md mx-auto">
+            <p className="font-playfair italic text-[1.35rem] sm:text-[1.55rem] font-medium leading-[1.28] text-[#6b1d2f]/85 max-w-md mx-auto">
               From school hallways to Udaipur. Five chapters that carried a quiet crush all the way to forever.
             </p>
             <h2
-              className="font-archivo text-[3.4rem] sm:text-[4.6rem] font-bold uppercase tracking-[-0.025em] leading-[0.86] text-[#5c1a1b]"
+              className="font-archivo text-[2.6rem] sm:text-[3.5rem] font-semibold uppercase tracking-[0.06em] leading-[1.02] text-[#6b1d2f]"
               style={{ textWrap: 'balance' }}
             >
               Our Love{' '}
-              <span className="font-playfair font-light italic lowercase text-[3.1rem] sm:text-[4.2rem] text-[#ef4a23]">
+              <span className="font-playfair font-medium italic lowercase text-[3rem] sm:text-[4rem] text-[#b84a27]">
                 story
               </span>
             </h2>
@@ -616,10 +616,10 @@ export const LoveStoryStack: React.FC = () => {
                     role="tab"
                     aria-selected={isActive}
                     onClick={() => handleJumpToChapter(idx)}
-                    className={`min-w-[44px] min-h-[44px] rounded-full font-archivo text-xs tabular-nums tracking-wider transition-colors duration-200 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#ef4a23] ${
+                    className={`min-w-[44px] min-h-[44px] rounded-full font-archivo text-xs tabular-nums tracking-wider transition-colors duration-200 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#b84a27] ${
                       isActive
-                        ? 'bg-[#471418] text-[#faf3e4]'
-                        : 'bg-[#5c1a1b]/10 text-[#5c1a1b]/80 hover:bg-[#5c1a1b]/15'
+                        ? 'bg-[#4a1422] text-[#faf3e4]'
+                        : 'bg-[#6b1d2f]/10 text-[#6b1d2f]/80 hover:bg-[#6b1d2f]/15'
                     }`}
                   >
                     {chapter.number}
