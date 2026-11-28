@@ -11,6 +11,7 @@ import { ScratchRevealInvite } from './ScratchRevealInvite';
 import { RoyalEnvelopeDoors } from './RoyalEnvelopeDoors';
 
 gsap.registerPlugin(ScrollTrigger);
+ScrollTrigger.config({ ignoreMobileResize: true });
 
 export const KolibrieWeddingApp: React.FC = () => {
   const [showIntroWipe, setShowIntroWipe] = useState<boolean>(() => !hasSeenIntroBefore());
